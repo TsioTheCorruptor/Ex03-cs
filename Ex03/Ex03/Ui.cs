@@ -4,9 +4,10 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace Ex03
+namespace UI
 {
-    internal class Class1
+    internal class Ui
     {
+
     }
 }
