@@ -219,22 +219,23 @@ namespace UI
 
         private void collectElectricData(Dictionary<e_VehicleDataKeys, object> data)
         {
+            int time;
             Console.WriteLine("Enter current battery time (hours):");
-
-            data[e_VehicleDataKeys.CurrentBatteryTime] = float.Parse(Console.ReadLine());
+           m_IsvehicleValid= int.TryParse(Console.ReadLine(), out time);
+            data[e_VehicleDataKeys.CurrentBatteryTime] = time;
         }
 
         private void collectTruckData(Dictionary<e_VehicleDataKeys, object> data)
         {
+            bool isCarrying;
+            float Volume;
             Console.WriteLine("Is carrying dangerous materials? (true/false):");
-            data[e_VehicleDataKeys.IsCarryingDangerousMaterials] = bool.Parse(Console.ReadLine());
-
+            m_IsvehicleValid = bool.TryParse(Console.ReadLine(), out isCarrying);
+            data[e_VehicleDataKeys.IsCarryingDangerousMaterials] = isCarrying;
             Console.WriteLine("Enter cargo volume:");
-            data[e_VehicleDataKeys.CargoVolume] = float.Parse(Console.ReadLine());
+            m_IsvehicleValid=float.TryParse(Console.ReadLine(),out Volume);
+            data[e_VehicleDataKeys.CargoVolume] = Volume;
         }
-        private bool isCarColorValid(string carColor)
-        {
-
-        }
+        
     }
 }
