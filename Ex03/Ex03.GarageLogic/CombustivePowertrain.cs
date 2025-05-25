@@ -6,7 +6,7 @@ using Ex03.GarageLogic.Combustive;
 
 namespace Ex03.GarageLogic
 {
-    internal class CombustivePowertrain: BasePowertrain, ICombustive
+    public class CombustivePowertrain: BasePowertrain, ICombustive
     {
         private readonly FuelType m_fuelType;
         public CombustivePowertrain(float i_minFuelAmount,float i_maxFuelAmount, float i_initialFuelAmount, FuelType i_fuelType) 

@@ -13,9 +13,7 @@ namespace Vehicle
         public string OwnerName { get; set;}
         public string OwnerPhone { get; set;}
 
-        protected readonly float m_maxFuel;
-        protected readonly float m_maxCharge;
-        protected readonly BasePowertrain m_powerTrain;
+        protected BasePowertrain m_powerTrain;
         protected float m_energyPrecentage;
         
 
