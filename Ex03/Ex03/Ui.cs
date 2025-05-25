@@ -1,6 +1,6 @@
 ﻿using System;
 using System.Xml.Linq;
-
+using Ex03.GarageLogic;
 namespace UI
 {
     internal class Ui
@@ -99,7 +99,7 @@ namespace UI
             m_IsvehicleValid = true;
             string? plateNumber;
             int vehicleNameIndex;
-            Dictionary<e_VehicleDataKeys, object> vehicleData = new Dictionary<e_VehicleDataKeys, object>();
+           // Dictionary<e_VehicleDataKeys, object> vehicleData = new Dictionary<e_VehicleDataKeys, object>();
             Console.WriteLine("Enter license plate number:");
             plateNumber = Console.ReadLine();
 
@@ -227,13 +227,13 @@ namespace UI
 
         private void collectTruckData(Dictionary<e_VehicleDataKeys, object> data)
         {
-            bool isCarrying;
-            float Volume;
+            string? isCarrying;
+            string? Volume;
             Console.WriteLine("Is carrying dangerous materials? (true/false):");
-            m_IsvehicleValid = bool.TryParse(Console.ReadLine(), out isCarrying);
-            data[e_VehicleDataKeys.IsCarryingDangerousMaterials] = isCarrying;
+            isCarrying = Console.ReadLine();
+            
             Console.WriteLine("Enter cargo volume:");
-            m_IsvehicleValid=float.TryParse(Console.ReadLine(),out Volume);
+            Volume = Console.ReadLine();
             data[e_VehicleDataKeys.CargoVolume] = Volume;
         }
         
