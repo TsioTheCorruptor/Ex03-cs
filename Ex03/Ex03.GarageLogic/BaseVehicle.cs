@@ -10,14 +10,34 @@ namespace Vehicle
 {
     public abstract class BaseVehicle
     {
-        public string OwnerName { get; set;}
-        public string OwnerPhone { get; set;}
-
-        protected BasePowertrain m_powerTrain;
+        public string? OwnerName { get; set;}
+        public string? OwnerPhone { get; set;}
+        public readonly string m_modelName;
+        public readonly string m_licansePlate;
+        protected readonly BasePowertrain m_powerTrain;
         protected float m_energyPrecentage;
-        
+        protected List<Wheel>? m_wheels = null;
 
-        protected List<Wheel> m_wheels = null;
+        public BaseVehicle(string i_modelName, string i_licansePlate,int i_wheelCount ,BasePowertrain i_powerTrain)
+        {
+            m_modelName = i_modelName;
+            m_licansePlate = i_licansePlate;
+            m_powerTrain = i_powerTrain;
+            m_wheels = new List<Wheel>(i_wheelCount);
+        }
+
+        protected void InitWheels(string manufacturer,
+                          int wheelCount,
+                          float maxPressure,
+                          float minPressure,
+                          float initialPressure)
+        {
+            if (m_wheels != null)
+                throw new InvalidOperationException("Wheels already initialised");
+
+            for (int i = 0; i < wheelCount; i++)
+                m_wheels.Add(new Wheel(manufacturer, maxPressure, minPressure, initialPressure));
+        }
 
         protected class Wheel
         {
@@ -55,12 +75,7 @@ namespace Vehicle
                 }
             }
         }
-
-
     }
-
-
-
 }
 
 

@@ -10,7 +10,7 @@ namespace Ex03.GarageLogic
     {
        public void SetCreatedVehicleAttribute(e_VehicleDataKeys key, string value)
         {
-
+            
         }
        
     }

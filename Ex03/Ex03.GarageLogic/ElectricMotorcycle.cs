@@ -6,9 +6,10 @@ namespace Ex03.GarageLogic.Vehicles
 {
     public class ElectricMotorcycle: Motorcycle, IElectric
     {
-        public ElectricMotorcycle()
+        public ElectricMotorcycle(string i_modelName, string i_licansePlate) 
+            : base(i_modelName, i_licansePlate, new ElectricPowertrain(0, (float)3.2, 0))
         {
-            this.m_powerTrain = new ElectricPowertrain(0, (float)3.2 , 0);
+
         }
         //add other methods
 

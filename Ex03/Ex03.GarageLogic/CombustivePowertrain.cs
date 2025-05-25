@@ -9,11 +9,9 @@ namespace Ex03.GarageLogic
     public class CombustivePowertrain: BasePowertrain, ICombustive
     {
         private readonly FuelType m_fuelType;
-        public CombustivePowertrain(float i_minFuelAmount,float i_maxFuelAmount, float i_initialFuelAmount, FuelType i_fuelType) 
+        public CombustivePowertrain(float i_minFuelAmount,float i_maxFuelAmount, float i_initialFuelAmount, FuelType i_fuelType)
+            : base(i_minFuelAmount, i_maxFuelAmount, i_initialFuelAmount)
         {
-            this.m_minimumEnergy = i_minFuelAmount;
-            this.m_maximumEnergy = i_maxFuelAmount;
-            this.m_remaningEnergy = i_initialFuelAmount;
             this.m_fuelType = i_fuelType;
         }
         public float GetMaxFuelAmount()

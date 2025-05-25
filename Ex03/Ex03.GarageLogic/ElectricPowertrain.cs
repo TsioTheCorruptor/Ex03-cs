@@ -6,12 +6,9 @@ namespace Ex03.GarageLogic.Components
 {
     public class ElectricPowertrain: BasePowertrain, IElectric
     {
-        public ElectricPowertrain(float i_minimumChargeLevel, float i_maxChargeLevel, float i_initialChargeLevel)
+        public ElectricPowertrain(float i_minimumChargeLevel, float i_maxChargeLevel, float i_initialChargeLevel) : base(i_minimumChargeLevel, i_maxChargeLevel, i_initialChargeLevel)
         {
-            //todo: check if we can activate the base() constructor
-            this.m_minimumEnergy = i_minimumChargeLevel;
-            this.m_maximumEnergy = i_maxChargeLevel;
-            this.m_remaningEnergy = i_initialChargeLevel;
+
         }
 
         public float GetRemaningCharge()

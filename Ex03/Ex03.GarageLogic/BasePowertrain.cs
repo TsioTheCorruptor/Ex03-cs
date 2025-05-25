@@ -8,8 +8,15 @@ namespace BaseComponents
 {
     public class BasePowertrain
     {
-        protected float m_minimumEnergy;
-        protected float m_maximumEnergy;
+        protected readonly float m_minimumEnergy;
+        protected readonly float m_maximumEnergy;
         protected float m_remaningEnergy;
+        
+        public BasePowertrain(float i_minimumEnergy, float i_maximumEnergy, float i_remaningEnergy)
+        {
+            m_minimumEnergy = i_minimumEnergy;
+            m_maximumEnergy = i_maximumEnergy;
+            m_remaningEnergy = i_remaningEnergy;
+        }
     }
 }

@@ -1,6 +1,5 @@
 ﻿using Enums;
 using Ex03.GarageLogic.Combustive;
-using Ex03.GarageLogic.Electric;
 using Ex03.GarageLogic.VehicleTypes;
 
 
@@ -8,9 +7,10 @@ namespace Ex03.GarageLogic.Vehicles
 {
     public class FuelMotorcycle: Motorcycle, ICombustive
     {
-        public FuelMotorcycle()
+        public FuelMotorcycle(string i_modelName, string i_licansePlate)
+            : base(i_modelName, i_licansePlate, new CombustivePowertrain(0, (float)5.8, 0, FuelType.Octan98))
         {
-            this.m_powerTrain = new CombustivePowertrain(0,(float)5.8, 0,FuelType.Octan98);
+
         }
 
         public float GetMaxFuelAmount()
