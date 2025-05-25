@@ -1,11 +1,12 @@
 ﻿using CostumExceptions;
+using BaseComponents;
 using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace Ex03.GarageLogic
+namespace Vehicle
 {
     public abstract class BaseVehicle
     {
@@ -14,16 +15,11 @@ namespace Ex03.GarageLogic
 
         protected readonly float m_maxFuel;
         protected readonly float m_maxCharge;
+        protected readonly BasePowertrain m_powerTrain;
         protected float m_energyPrecentage;
+        
 
         protected List<Wheel> m_wheels = null;
-
-
-        public abstract float GetEnergyPercentage();
-
-
-
-
 
         protected class Wheel
         {
@@ -45,7 +41,7 @@ namespace Ex03.GarageLogic
             {
                 if (Pressure < 0)
                 {
-                    string messege = $"Warning cannot deflate tire using 'Inflate' method. actual pressure given to inflate : {i_addedPressure}";
+                    string messege = $"Error: cannot deflate tire using 'Inflate' method. actual pressure given to inflate : {i_addedPressure}";
                     throw new ArgumentException(messege);
                 }
 
@@ -56,7 +52,7 @@ namespace Ex03.GarageLogic
                 }
                 else
                 {
-                    string messege = $"Error: Wheel pressure rage exceeded. range: from {m_minPressure} PSI to {m_maxPressure} PSI,  but was set to {desiredPressure}";
+                    string messege = $"Error: Wheel pressure range exceeded. range: from {m_minPressure} PSI to {m_maxPressure} PSI,  but was set to {desiredPressure}";
                     throw new ValueRangeException(messege, m_minPressure, m_maxPressure);
                 }
             }

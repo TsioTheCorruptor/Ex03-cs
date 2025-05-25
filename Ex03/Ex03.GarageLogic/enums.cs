@@ -4,11 +4,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace Ex03.GarageLogic
+namespace Enums
 {
-    public interface IElectricVehicle
-    {
-
-        public float Charge(float i_time);
-    }
+    public enum FuelType { Soler, Octan95, Octan96, Octan98}
 }
