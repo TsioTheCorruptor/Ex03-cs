@@ -14,29 +14,63 @@ namespace Vehicle
         public string? OwnerPhone { get; set;}
         public readonly string m_modelName;
         public readonly string m_licansePlate;
+        public readonly int m_maxNumOfWheels;
+        public readonly float m_minWheelPressure;
+        public readonly float m_maxWheelPressure;
         protected readonly BasePowertrain m_powerTrain;
-        protected float m_energyPrecentage;
-        protected List<Wheel>? m_wheels = null;
+        private List<Wheel> m_wheels;
 
-        public BaseVehicle(string i_modelName, string i_licansePlate,int i_wheelCount ,BasePowertrain i_powerTrain)
+        public float EnergyPrecentage
+        {
+            get
+            {
+                return m_powerTrain.GetEnergyPrecentage();
+            }
+        }
+
+        public BaseVehicle(string i_modelName, string i_licansePlate,int i_maxWheelCount , float i_minWheelPressure, float i_maxWheelPressure, BasePowertrain i_powerTrain)
         {
             m_modelName = i_modelName;
             m_licansePlate = i_licansePlate;
             m_powerTrain = i_powerTrain;
-            m_wheels = new List<Wheel>(i_wheelCount);
+            m_maxNumOfWheels = i_maxWheelCount;
+            m_minWheelPressure = i_minWheelPressure;
+            m_maxWheelPressure = i_maxWheelPressure;
+            m_wheels = new List<Wheel>(i_maxWheelCount);
         }
 
-        protected void InitWheels(string manufacturer,
-                          int wheelCount,
-                          float maxPressure,
-                          float minPressure,
-                          float initialPressure)
+        public void AddWheel(string i_manufacturer, float i_initialPressure)
         {
-            if (m_wheels != null)
-                throw new InvalidOperationException("Wheels already initialised");
+            if (m_wheels.Count >= m_maxNumOfWheels)
+            {
+                string messege = $"This vehicle already has the maximum of {m_maxNumOfWheels} wheels.";
+                throw new ArgumentException(messege);
+            }
 
-            for (int i = 0; i < wheelCount; i++)
-                m_wheels.Add(new Wheel(manufacturer, maxPressure, minPressure, initialPressure));
+            m_wheels.Add(new Wheel(i_manufacturer,m_maxWheelPressure,m_minWheelPressure,i_initialPressure));
+        }
+
+        public void InitAllWheels(string i_manufacturer, float i_initialPressure)
+        {
+            if (m_wheels.Count > 0)
+                throw new ArgumentException("Wheels already initialised.");
+
+            for (int i = 0; i < this.m_maxNumOfWheels; i++)
+                this.AddWheel(i_manufacturer, i_initialPressure);
+        }
+
+        public void InflateAllTiresToMax()
+        {
+
+            if (m_wheels.Count == 0)
+                throw new InvalidOperationException("No wheels have been added.");
+
+            foreach (Wheel wheel in m_wheels)
+            {
+                float delta = m_maxWheelPressure - wheel.Pressure;
+                if (delta > 0)
+                    wheel.Inflate(delta);
+            }
         }
 
         protected class Wheel
