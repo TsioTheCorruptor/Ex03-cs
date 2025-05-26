@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Xml.Linq;
 using Ex03.GarageLogic;
+using Enums;
 namespace UI
 {
     internal class Ui
@@ -8,6 +9,7 @@ namespace UI
         private enum e_UserOptions { ReadVehicleDataFromFile, AddVehicle }
         private bool m_IsvehicleValid = true;
         private readonly string[] m_doorAmountsToEnter = { "2", "3", "4", "5" };
+        GarageLogic m_Garage=new GarageLogic();
         private enum e_licenseType
         {
             A, A2, AB, B2
@@ -46,7 +48,8 @@ namespace UI
             CurrentFuelAmount,
             CurrentBatteryTime,
             IsCarryingDangerousMaterials,
-            CargoVolume
+            CargoVolume,
+            EnergyPercentage
         }
 
         // Keeps the same name, but now it's dynamically generated from the enum
@@ -77,14 +80,7 @@ namespace UI
             }
         }
 
-        private void printVehicleTypesToChoose()
-        {
-            Console.WriteLine("Enter your Vehicle type:");
-            for (int i = 0; i < m_vehicleTypesToEnter.Length; i++)
-            {
-                Console.WriteLine("{0}|{1}", i, m_vehicleTypesToEnter[i]);
-            }
-        }
+        
         private void printStringArray(string[] i_strings,string i_openingText)
         {
             Console.WriteLine(i_openingText);
@@ -99,7 +95,7 @@ namespace UI
             m_IsvehicleValid = true;
             string? plateNumber;
             int vehicleNameIndex;
-           // Dictionary<e_VehicleDataKeys, object> vehicleData = new Dictionary<e_VehicleDataKeys, object>();
+           
             Console.WriteLine("Enter license plate number:");
             plateNumber = Console.ReadLine();
 
@@ -118,124 +114,126 @@ namespace UI
                     printStringArray(m_vehicleTypesToEnter, "Enter your Vehicle type:");
                     validNameIndex = int.TryParse(Console.ReadLine(), out vehicleNameIndex);
                 }
-
+                
                 e_VehicleTypes selectedType = (e_VehicleTypes)vehicleNameIndex;
-                switch(selectedType)
+                m_Garage.CreateTempVehicle(m_vehicleTypesToEnter[vehicleNameIndex], plateNumber);
+                collectCommonData();
+                if(m_Garage.getCarEnergyType()=="Fuel")
                 {
-                    case e_VehicleTypes.FuelCar:
-                        collectCarData(vehicleData);
-                        collectFuelData(vehicleData);
-                        break;
-                    case e_VehicleTypes.ElectricCar:
-                        collectCarData(vehicleData);
-                        collectElectricData(vehicleData);
-                        break;
-                    case e_VehicleTypes.FuelMotorcycle:
-                        collectMotorcycleData(vehicleData);
-                        collectFuelData(vehicleData);
-                        break;
-                    case e_VehicleTypes.ElectricMotorcycle:
-                        collectMotorcycleData(vehicleData);
-                        collectElectricData(vehicleData);
-                        break;
-                    case e_VehicleTypes.Truck:
-                        collectTruckData(vehicleData);
-                        break;
+                    collectFuelData();
                 }
+                else if(m_Garage.getCarEnergyType()=="Electric")
+                {
+                    collectElectricData();
+                }
+                Enums.e_VehicleDataKeys[] PropertyDataArr = m_Garage.GetPropertiesInfo();
+                foreach (Enums.e_VehicleDataKeys PropertyData in PropertyDataArr)
+                {
+                    getDataFromUserDirectly(PropertyData.ToString(), PropertyData);
+                }
+                
 
                 // TODO: send to engine to create vehicle with data
-                vehicleData.Clear();
+                
             }
         }
-        private void collectCommonData(Dictionary<e_VehicleDataKeys, object> data)
+        private void collectCommonData()
         {
-            string? manufacturernName;
-            float airPressure;
-
-            Console.WriteLine("Enter wheel manufacturer name:");
-           manufacturernName = Console.ReadLine();
-            if(manufacturernName==null)
-            {
-                m_IsvehicleValid = false;
-            }
-            else
-            {
-                data[e_VehicleDataKeys.WheelManufacturer] = manufacturernName;
-            }
-
-
-            Console.WriteLine("Enter current air pressure in wheels:");
-            
-              m_IsvehicleValid = float.TryParse(Console.ReadLine(),out airPressure);
-            
-            data[e_VehicleDataKeys.CurrentAirPressure]=airPressure;
-        }
-
-        private void collectCarData(Dictionary<e_VehicleDataKeys, object> data)
-        {
-            int colorIndex;
-            int doorAmount;
-            printStringArray(m_carColorsToEnter, "Enter car color index :");
-             m_IsvehicleValid=int.TryParse(Console.ReadLine(),out colorIndex) ;
-            printStringArray(m_doorAmountsToEnter, "Enter number of doors ");
-            m_IsvehicleValid = int.TryParse(Console.ReadLine(), out doorAmount);   
-            data[e_VehicleDataKeys.NumberOfDoors] = doorAmount;
-            data[e_VehicleDataKeys.Color] = m_carColorsToEnter[colorIndex];
-        }
-
-        private void collectMotorcycleData(Dictionary<e_VehicleDataKeys, object> data)
-        {
-            string? licenseType;
-            int engineCapacity;
-           printStringArray(m_licenseTypeToEnter,"Enter license type index:");
-            licenseType= Console.ReadLine();
-            if (licenseType == null)
-            {
-                m_IsvehicleValid = false;
-            }
-            else
-            {
-                data[e_VehicleDataKeys.LicenseType] = licenseType;
-            }
+            getDataFromUserDirectly("Enter energy percentage:", Enums.e_VehicleDataKeys.EnergyPercentage);
             
 
-            Console.WriteLine("Enter engine capacity (cc):");
-             m_IsvehicleValid= int.TryParse(Console.ReadLine(),out engineCapacity);
-            data[e_VehicleDataKeys.EngineCapacity]= engineCapacity;
-        }
-
-        private void collectFuelData(Dictionary<e_VehicleDataKeys, object> data)
-        {
-            int fuelTypeIndex;
-            float fuelAmount;
-            printStringArray(m_FuelTypeToEnter, "Enter fuel type index :");
-            m_IsvehicleValid = int.TryParse(Console.ReadLine(), out fuelTypeIndex);
-
-            Console.WriteLine("Enter current amount of fuel (liters):");
-           m_IsvehicleValid= float.TryParse(Console.ReadLine(),out fuelAmount);
-            data[e_VehicleDataKeys.CurrentFuelAmount] = fuelAmount;
-            data[e_VehicleDataKeys.FuelType] = m_FuelTypeToEnter[fuelTypeIndex];
-        }
-
-        private void collectElectricData(Dictionary<e_VehicleDataKeys, object> data)
-        {
-            int time;
-            Console.WriteLine("Enter current battery time (hours):");
-           m_IsvehicleValid= int.TryParse(Console.ReadLine(), out time);
-            data[e_VehicleDataKeys.CurrentBatteryTime] = time;
-        }
-
-        private void collectTruckData(Dictionary<e_VehicleDataKeys, object> data)
-        {
-            string? isCarrying;
-            string? Volume;
-            Console.WriteLine("Is carrying dangerous materials? (true/false):");
-            isCarrying = Console.ReadLine();
+            for(int i=0; i<m_Garage.GetAmountOfWheelsInCurrentCar(); i++)
+            {
+                getDataFromUserDirectly("Enter wheel manufacturer name:", Enums.e_VehicleDataKeys.WheelManufacturer);
+                getDataFromUserDirectly(string.Format("Enter current air pressure in wheel {0}:", i+1),Enums.e_VehicleDataKeys.CurrentAirPressure);
+            }
             
-            Console.WriteLine("Enter cargo volume:");
-            Volume = Console.ReadLine();
-            data[e_VehicleDataKeys.CargoVolume] = Volume;
         }
-        
+
+       
+
+        private void collectFuelData()
+        {
+            
+            getDataFromOptions( m_FuelTypeToEnter,"Enter fuel type index :", Enums.e_VehicleDataKeys.FuelType);
+            getDataFromUserDirectly("Enter current amount of fuel (liters):", Enums.e_VehicleDataKeys.CurrentFuelAmount);
+            
+        }
+
+        private void collectElectricData()
+        {
+            
+            getDataFromUserDirectly("Enter current battery time (hours):" ,Enums.e_VehicleDataKeys.CurrentBatteryTime);
+        }
+
+       
+        private void getDataFromOptions(string[] i_options,string i_entryText,Enums.e_VehicleDataKeys i_dataKey)
+        {
+            bool restartLoop=true;
+            int data;
+            
+            while (restartLoop)
+            {
+                printStringArray(i_options, i_entryText);
+                 int.TryParse(Console.ReadLine(),out data); 
+                if(data>i_options.Length)
+                {
+                    continue;
+                }
+                
+                try
+                {
+                    m_Garage.SetCreatedVehicleAttribute(i_dataKey, i_options[data]);
+                }
+                catch (FormatException ex)
+                {
+                    Console.WriteLine(ex.Message);
+                    continue;
+                }
+                catch (ArgumentException ex)
+                {
+                    Console.WriteLine(ex.Message);
+                    continue;
+                }
+                restartLoop = false;
+            }
+
+        }
+        private void getDataFromUserDirectly( string i_entryText, Enums.e_VehicleDataKeys i_dataKey)
+        {
+            bool restartLoop = true;
+            string? data;
+
+            while (restartLoop)
+            {
+                Console.WriteLine(i_entryText);
+                data = Console.ReadLine();
+                try
+                {
+                    if(data!=null)
+                    {
+                        m_Garage.SetCreatedVehicleAttribute(i_dataKey, data);
+                    }
+                    else
+                    {
+                        continue;
+                    }
+                    
+                }
+                catch (FormatException ex)
+                {
+                    Console.WriteLine(ex.Message);
+                    continue;
+                }
+                catch (ArgumentException ex)
+                {
+                    Console.WriteLine(ex.Message);
+                    continue;
+                }
+                restartLoop = false;
+            }
+
+        }
+
     }
 }
