@@ -4,11 +4,12 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using Enums;
+using Vehicle;
 namespace Ex03.GarageLogic
 {
     public class GarageLogic
     {
-        
+        Dictionary<string,BaseVehicle> m_vehicleDataBase =new Dictionary<string,BaseVehicle>();
        public void SetCreatedVehicleAttribute(e_VehicleDataKeys key, string value)
         {
 
@@ -17,7 +18,7 @@ namespace Ex03.GarageLogic
         {
             return 1;
         }
-        public void CreateVehicle(string i_licenseNumber,string i_VehicleType)
+        public void CreateTempVehicle(string i_licenseNumber,string i_VehicleType)
         {
 
         }

@@ -116,7 +116,7 @@ namespace UI
                 }
                 
                 e_VehicleTypes selectedType = (e_VehicleTypes)vehicleNameIndex;
-                m_Garage.CreateVehicle(m_vehicleTypesToEnter[vehicleNameIndex], plateNumber);
+                m_Garage.CreateTempVehicle(m_vehicleTypesToEnter[vehicleNameIndex], plateNumber);
                 collectCommonData();
                 if(m_Garage.getCarEnergyType()=="Fuel")
                 {
@@ -150,21 +150,7 @@ namespace UI
             
         }
 
-        private void collectCarData()
-        {
-            
-            getDataFromOptions(m_carColorsToEnter,"Enter car color index :" , Enums.e_VehicleDataKeys.Color);
-            getDataFromOptions(m_doorAmountsToEnter,"Enter number of doors " , Enums.e_VehicleDataKeys.NumberOfDoors);
-            
-        }
-
-        private void collectMotorcycleData()
-        {
-            
-            getDataFromOptions(m_licenseTypeToEnter, "Enter license type index:", Enums.e_VehicleDataKeys.LicenseType);
-            getDataFromUserDirectly("Enter engine capacity (cc):", Enums.e_VehicleDataKeys.EngineCapacity);
-
-        }
+       
 
         private void collectFuelData()
         {
@@ -180,14 +166,7 @@ namespace UI
             getDataFromUserDirectly("Enter current battery time (hours):" ,Enums.e_VehicleDataKeys.CurrentBatteryTime);
         }
 
-        private void collectTruckData()
-        {
-
-            getDataFromUserDirectly("Is carrying dangerous materials? (true/false):", Enums.e_VehicleDataKeys.IsCarryingDangerousMaterials);
-           getDataFromUserDirectly("Enter cargo volume:", Enums.e_VehicleDataKeys.CargoVolume);
-          
-           
-        }
+       
         private void getDataFromOptions(string[] i_options,string i_entryText,Enums.e_VehicleDataKeys i_dataKey)
         {
             bool restartLoop=true;
