@@ -1,0 +1,107 @@
+﻿using System;
+using System.Collections.Generic;
+using System.IO;
+using System.Linq;
+using System.Reflection;
+using BaseVehicle;               
+using Ex03.GarageLogic;          
+using Ex03.GarageLogic.Combustive;
+using Ex03.GarageLogic.Electric;
+using Ex03.GarageLogic.Vehicles; 
+
+namespace Ex03.GarageLogic.IO
+{
+    public static class VehicleFileImporter
+    {
+        public static IReadOnlyList<GarageEntry> Import(string i_FilePath)
+        {
+            if (!File.Exists(i_FilePath))
+            {
+                throw new FileNotFoundException($"Input file '{i_FilePath}' was not found.");
+            }
+
+            var entries = new List<GarageEntry>();
+
+            string[] lines = File.ReadAllLines(i_FilePath);
+
+            foreach (string rawLine in lines)
+            {
+                
+                if (string.IsNullOrWhiteSpace(rawLine) || rawLine.TrimStart().StartsWith("#"))
+                {
+                    continue;
+                }
+
+                string[] parts = rawLine.Split(',', StringSplitOptions.TrimEntries);
+                if (parts.Length < 8)
+                {
+                    throw new FormatException($"Invalid line – expected 8 comma‑separated fields but got {parts.Length}: '{rawLine}'.");
+                }
+
+                // ─── 1 Parse basic data ────────────────────────────────────────
+                string ownerName = parts[0];
+                string ownerPhone = parts[1];
+                string vehicleTypeString = parts[2];
+                //todo: create vihcle here than we can check the others
+                string licenceId = parts[3];
+                string modelName = parts[4];
+                string wheelManufacturer = parts[5];
+                if (!float.TryParse(parts[6], out float wheelPressure))
+                {
+                    throw new FormatException($"Wheel pressure is not a valid float: '{parts[6]}' in line '{rawLine}'.");
+                }
+                if (!float.TryParse(parts[7], out float energyAmount))
+                {
+                    throw new FormatException($"Energy amount is not a valid float: '{parts[7]}' in line '{rawLine}'.");
+                }
+
+                Vehicle vehicle = VehicleCreator.CreateVehicle(vehicleTypeString, licenceId, modelName);
+                if (vehicle == null)
+                {
+                    throw new ArgumentException($"Vehicle type '{vehicleTypeString}' is not supported.");
+                }
+
+                vehicle.InitAllWheels(wheelManufacturer, wheelPressure);
+
+
+                switch (vehicle)
+                {
+                    case IElectric eVehicle:
+                        eVehicle.Charge(energyAmount);
+                        break;
+                    case ICombustive cVehicle:
+                        cVehicle.Fuel(cVehicle.GetFuelType(), energyAmount);
+                        break;
+                }
+
+                //todo: find how to add these generically
+                PrintSpecialProperties(vehicle);
+
+                
+                entries.Add(new GarageEntry(vehicle, ownerName, ownerPhone));
+            }
+
+            return entries;
+        }
+
+        /// <summary>
+        /// this is just for debug for now
+        /// </summary>
+        private static void PrintSpecialProperties(Vehicle i_Vehicle)
+        {
+            Console.WriteLine($"Special properties for {i_Vehicle.GetType().Name}:");
+            PropertyInfo[] declared = i_Vehicle.GetType()
+                                               .GetProperties(BindingFlags.Instance | BindingFlags.Public | BindingFlags.DeclaredOnly);
+            if (declared.Length == 0)
+            {
+                Console.WriteLine("  (none)");
+                return;
+            }
+
+            foreach (PropertyInfo pi in declared)
+            {
+                Console.WriteLine($"  {pi.Name} = {pi.GetValue(i_Vehicle)}");
+            }
+        }
+    }
+}

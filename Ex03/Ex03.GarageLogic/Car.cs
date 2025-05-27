@@ -5,11 +5,11 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
-using Vehicle;
+using BaseVehicle;
 
 namespace Ex03.GarageLogic.VehicleTypes
 {
-    public class Car: Vehicle.Vehicle
+    public class Car: BaseVehicle.Vehicle
     {
         //Given Consts
         private const int k_numOfWheels = 5;

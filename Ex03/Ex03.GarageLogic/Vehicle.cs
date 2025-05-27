@@ -6,12 +6,10 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace Vehicle
+namespace BaseVehicle
 {
     public abstract class Vehicle
     {
-        public string? OwnerName { get; set;}
-        public string? OwnerPhone { get; set;}
         public readonly string m_modelName;
         public readonly string m_licansePlate;
         public readonly int m_maxNumOfWheels;

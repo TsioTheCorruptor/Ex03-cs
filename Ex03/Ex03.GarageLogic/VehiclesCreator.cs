@@ -1,6 +1,6 @@
 ﻿using System.Collections.Generic;
 using Ex03.GarageLogic.Vehicles;
-using Vehicle;
+using BaseVehicle;
 
 
 namespace Ex03.GarageLogic

@@ -1,11 +1,11 @@
 ﻿using System;
-using Vehicle;
+using BaseVehicle;
 using Enums;
 using BaseComponents;
 
 namespace Ex03.GarageLogic.VehicleTypes
 {
-    public class Motorcycle: Vehicle.Vehicle
+    public class Motorcycle: BaseVehicle.Vehicle
     {
         //Given Consts
         private const int k_numOfWheels = 2;
