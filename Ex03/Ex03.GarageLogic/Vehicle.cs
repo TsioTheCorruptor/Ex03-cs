@@ -8,7 +8,7 @@ using System.Threading.Tasks;
 
 namespace Vehicle
 {
-    public abstract class BaseVehicle
+    public abstract class Vehicle
     {
         public string? OwnerName { get; set;}
         public string? OwnerPhone { get; set;}
@@ -28,7 +28,7 @@ namespace Vehicle
             }
         }
 
-        public BaseVehicle(string i_modelName, string i_licansePlate,int i_maxWheelCount , float i_minWheelPressure, float i_maxWheelPressure, BasePowertrain i_powerTrain)
+        public Vehicle(string i_modelName, string i_licansePlate,int i_maxWheelCount , float i_minWheelPressure, float i_maxWheelPressure, BasePowertrain i_powerTrain)
         {
             m_modelName = i_modelName;
             m_licansePlate = i_licansePlate;

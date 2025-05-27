@@ -5,7 +5,7 @@ using BaseComponents;
 
 namespace Ex03.GarageLogic.VehicleTypes
 {
-    public class Motorcycle: BaseVehicle
+    public class Motorcycle: Vehicle.Vehicle
     {
         //Given Consts
         private const int k_numOfWheels = 2;

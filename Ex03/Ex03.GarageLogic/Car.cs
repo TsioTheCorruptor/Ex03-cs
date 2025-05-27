@@ -9,7 +9,7 @@ using Vehicle;
 
 namespace Ex03.GarageLogic.VehicleTypes
 {
-    public class Car: BaseVehicle
+    public class Car: Vehicle.Vehicle
     {
         //Given Consts
         private const int k_numOfWheels = 5;
