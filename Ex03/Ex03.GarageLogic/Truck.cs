@@ -2,16 +2,15 @@
 using Ex03.GarageLogic.Combustive;
 using Ex03.GarageLogic.VehicleTypes;
 
-
-namespace Ex03.GarageLogic.Vehicles
+namespace Ex03.GarageLogic
 {
-    public class FuelMotorcycle: Motorcycle, ICombustive
+    public class Truck: BaseTruck, ICombustive
     {
-        private const float k_fuelTankVolume = 5.8f;
+        private const float k_fuelTankVolume = 135f;
         private const float k_minimumFuelAmount = 0;
         private const float k_initialFuelAmount = 0;
-        private const FuelType k_DefaultFuelType = FuelType.Octan98;
-        public FuelMotorcycle(string i_modelName, string i_licansePlate)
+        private const FuelType k_DefaultFuelType = FuelType.Soler;
+        public Truck(string i_modelName, string i_licansePlate)
             : base(i_modelName, i_licansePlate, new CombustivePowertrain(k_minimumFuelAmount, k_fuelTankVolume, k_initialFuelAmount, k_DefaultFuelType))
         {
 

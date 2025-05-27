@@ -103,7 +103,7 @@ namespace Ex03.GarageLogic
         }
         public void CreateTempVehicle(string i_licenseNumber,string i_VehicleType)
         {
-
+            
         }
         public void AddVehicleToDataBase(string i_licenseNumber, string i_VehicleType)
         {
