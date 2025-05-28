@@ -5,7 +5,7 @@ namespace Ex03.GarageLogic.Electric
     {
         public float GetMaxCharge();
         public float GetRemaningCharge();
-        public void Charge(float i_time);
+        public void Charge(float i_Time);
 
     }
 }

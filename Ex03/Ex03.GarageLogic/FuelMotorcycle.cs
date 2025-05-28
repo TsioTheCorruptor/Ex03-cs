@@ -7,12 +7,12 @@ namespace Ex03.GarageLogic.Vehicles
 {
     public class FuelMotorcycle: BaseMotorcycle, ICombustive
     {
-        private const float k_fuelTankVolume = 5.8f;
-        private const float k_minimumFuelAmount = 0;
-        private const float k_initialFuelAmount = 0;
+        private const float k_FuelTankVolume = 5.8f;
+        private const float k_MinimumFuelAmount = 0;
+        private const float k_InitialFuelAmount = 0;
         private const FuelType k_DefaultFuelType = FuelType.Octan98;
         public FuelMotorcycle(string i_modelName, string i_licansePlate)
-            : base(i_modelName, i_licansePlate, new CombustivePowertrain(k_minimumFuelAmount, k_fuelTankVolume, k_initialFuelAmount, k_DefaultFuelType))
+            : base(i_modelName, i_licansePlate, new CombustivePowertrain(k_MinimumFuelAmount, k_FuelTankVolume, k_InitialFuelAmount, k_DefaultFuelType))
         {
 
         }

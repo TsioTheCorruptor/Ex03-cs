@@ -20,7 +20,8 @@ namespace Ex03.GarageLogic.BaseVehicleTypes
         //explenation in *
         private readonly IReadOnlyList<Type> sr_PropertyTypes = new List<Type>(k_NumberOfProperties)
         { typeof(bool), typeof(float) }.AsReadOnly();
-    public BaseTruck(string i_modelName, string i_licansePlate, BasePowertrain i_powerTrain)
+
+        public BaseTruck(string i_modelName, string i_licansePlate, BasePowertrain i_powerTrain)
             : base(i_modelName, i_licansePlate, k_NumOfWheels, k_WheelMinPressure, k_MaxWheelsPressure, i_powerTrain)
         {
 

@@ -8,32 +8,32 @@ namespace Ex03.GarageLogic
 {
     public class CombustivePowertrain: BasePowertrain, ICombustive
     {
-        private readonly FuelType m_fuelType;
+        private readonly FuelType r_FuelType;
         public CombustivePowertrain(float i_minFuelAmount,float i_maxFuelAmount, float i_initialFuelAmount, FuelType i_fuelType)
             : base(i_minFuelAmount, i_maxFuelAmount, i_initialFuelAmount)
         {
-            this.m_fuelType = i_fuelType;
+            this.r_FuelType = i_fuelType;
         }
         public float GetMaxFuelAmount()
         {
-            return this.m_maximumEnergy;
+            return this.r_MaximumEnergy;
         }
 
         public float GetFuelRemainingAmount()
         {
-            return this.m_remaningEnergy;
+            return this.m_RemaningEnergy;
         }
 
         public FuelType GetFuelType()
         {
-            return this.m_fuelType;
+            return this.r_FuelType;
         }
 
         public void Fuel(FuelType i_fuelType, float i_literFuelAmount)
         {
-            if(i_fuelType != this.m_fuelType)
+            if(i_fuelType != this.r_FuelType)
             {
-                string messege = $"Error: Wrong fuel type selected to fuel the vehicle expexted: {this.m_fuelType} got {i_fuelType}";
+                string messege = $"Error: Wrong fuel type selected to fuel the vehicle expexted: {this.r_FuelType} got {i_fuelType}";
                 throw new ArgumentException(messege);
             }
 
@@ -44,15 +44,15 @@ namespace Ex03.GarageLogic
                 throw new ArgumentException(messege);
             }
 
-            float resultingRemaningFuel = this.m_remaningEnergy + i_literFuelAmount;
-            if (resultingRemaningFuel <= this.m_maximumEnergy && resultingRemaningFuel >= this.m_minimumEnergy)
+            float resultingRemaningFuel = this.m_RemaningEnergy + i_literFuelAmount;
+            if (resultingRemaningFuel <= this.r_MaximumEnergy && resultingRemaningFuel >= this.r_MinimumEnergy)
             {
-                this.m_remaningEnergy = resultingRemaningFuel;
+                this.m_RemaningEnergy = resultingRemaningFuel;
             }
             else
             {
-                string messege = $"Error: Fuel capacity exceeded allowed range. range: from {m_minimumEnergy} Liters to {m_maximumEnergy} Liters,  but was set to {resultingRemaningFuel} Liters";
-                throw new ValueRangeException(messege, m_minimumEnergy, m_maximumEnergy);
+                string messege = $"Error: Fuel capacity exceeded allowed range. range: from {r_MinimumEnergy} Liters to {r_MaximumEnergy} Liters,  but was set to {resultingRemaningFuel} Liters";
+                throw new ValueRangeException(messege, r_MinimumEnergy, r_MaximumEnergy);
             }
         }
     }

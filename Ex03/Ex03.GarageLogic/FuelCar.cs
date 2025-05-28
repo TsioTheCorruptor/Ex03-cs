@@ -11,12 +11,12 @@ namespace Ex03.GarageLogic
 {
     internal class FuelCar: BaseCar, ICombustive
     {
-        private const float k_fuelTankVolume = 48f;
-        private const float k_minimumFuelAmount = 0;
-        private const float k_initialFuelAmount = 0;
+        private const float k_FuelTankVolume = 48f;
+        private const float k_MinimumFuelAmount = 0;
+        private const float k_InitialFuelAmount = 0;
         private const FuelType k_DefaultFuelType = FuelType.Octan95;
         public FuelCar(string i_modelName, string i_licansePlate)
-            : base(i_modelName, i_licansePlate, new CombustivePowertrain(k_minimumFuelAmount, k_fuelTankVolume, k_initialFuelAmount, k_DefaultFuelType))
+            : base(i_modelName, i_licansePlate, new CombustivePowertrain(k_MinimumFuelAmount, k_FuelTankVolume, k_InitialFuelAmount, k_DefaultFuelType))
         {
 
         }

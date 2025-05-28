@@ -1,13 +1,7 @@
-﻿using System;
-using System.Collections.Generic;
-using System.IO;
-using System.Linq;
-using System.Reflection;
-using BaseVehicle;               
-using Ex03.GarageLogic;          
+﻿using BaseVehicle;                       
 using Ex03.GarageLogic.Combustive;
 using Ex03.GarageLogic.Electric;
-using Ex03.GarageLogic.Vehicles; 
+using System.ComponentModel;
 
 namespace Ex03.GarageLogic.IO
 {
@@ -73,35 +67,15 @@ namespace Ex03.GarageLogic.IO
                         cVehicle.Fuel(cVehicle.GetFuelType(), energyAmount);
                         break;
                 }
-
+                 List<string> specialPropertyList = //todo: implement
                 //todo: find how to add these generically
-                PrintSpecialProperties(vehicle);
+                vehicle.SetAllPropertiesFromOrderdListOfStrings(specialPropertyList);
                 
                 
                 entries.Add(new GarageEntry(vehicle, ownerName, ownerPhone));
             }
 
             return entries;
-        }
-
-        /// <summary>
-        /// this is just for debug for now
-        /// </summary>
-        private static void PrintSpecialProperties(Vehicle i_Vehicle)
-        {
-            Console.WriteLine($"Special properties for {i_Vehicle.GetType().Name}:");
-            PropertyInfo[] declared = i_Vehicle.GetType()
-                                               .GetProperties(BindingFlags.Instance | BindingFlags.Public | BindingFlags.DeclaredOnly);
-            if (declared.Length == 0)
-            {
-                Console.WriteLine("  (none)");
-                return;
-            }
-
-            foreach (PropertyInfo pi in declared)
-            {
-                Console.WriteLine($"  {pi.Name} = {pi.GetValue(i_Vehicle)}");
-            }
         }
     }
 }

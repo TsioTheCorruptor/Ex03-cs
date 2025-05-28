@@ -3,26 +3,26 @@ namespace CostumExceptions
 {
     public class ValueRangeException: Exception
     {
-        private readonly float m_minValue;
-        private readonly float m_maxValue;
+        private readonly float r_MinValue;
+        private readonly float r_MaxValue;
         public float MinValue { 
             get
             {
-                return m_minValue;
+                return r_MinValue;
             }
         }
         public float MaxValue
         {
             get
             {
-                return m_maxValue;
+                return r_MaxValue;
             }
         }
 
         public ValueRangeException(string message,float minValue,float maxValue) : base(message)
         {
-            m_minValue = minValue;
-            m_maxValue = maxValue;
+            r_MinValue = minValue;
+            r_MaxValue = maxValue;
         }
 
     }

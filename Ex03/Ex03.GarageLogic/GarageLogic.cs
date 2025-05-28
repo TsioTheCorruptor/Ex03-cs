@@ -86,7 +86,7 @@ namespace Ex03.GarageLogic
         }
         private void AddEntryToDataBase(GarageEntry i_Entry)
         {
-            string licensePlate = i_Entry.m_vehicle.r_LicansePlate;
+            string licensePlate = i_Entry.r_Vehicle.r_LicansePlate;
             m_vehicleDataBase.Add(licensePlate, i_Entry);
         }
         public GarageEntry CreateEntryFromTempVehicle(string i_PhoneNumber,string i_OwnerName)

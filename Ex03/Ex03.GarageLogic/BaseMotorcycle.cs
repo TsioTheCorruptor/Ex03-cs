@@ -8,8 +8,8 @@ namespace Ex03.GarageLogic.BaseVehicleTypes
     public class BaseMotorcycle: Vehicle
     {
         //Given Consts
-        private const int k_numOfWheels = 2;
-        private const float k_maxWheelsPressure = 30f;
+        private const int k_NumOfWheels = 2;
+        private const float k_MaxWheelsPressure = 30f;
         private const float k_WheelMinPressure = 0f;
         public MotorcycleLicenseType LicenceType { get; set; }
         public int EngineVolume { get; set; }
@@ -24,7 +24,7 @@ namespace Ex03.GarageLogic.BaseVehicleTypes
         { typeof(Enum), typeof(int) }.AsReadOnly();
 
         public BaseMotorcycle (string i_modelName, string i_licansePlate, BasePowertrain i_powerTrain)
-            : base(i_modelName, i_licansePlate, k_numOfWheels, k_WheelMinPressure, k_maxWheelsPressure, i_powerTrain)
+            : base(i_modelName, i_licansePlate, k_NumOfWheels, k_WheelMinPressure, k_MaxWheelsPressure, i_powerTrain)
         {
 
         }

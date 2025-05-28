@@ -7,10 +7,10 @@ namespace Ex03.GarageLogic
     public class ElectricCar: BaseMotorcycle, IElectric
     {
         private const float k_BatteryVolume = 4.8f;
-        private const float k_minimumChargeAmount = 0;
-        private const float k_initialChargeAmount = 0;
+        private const float k_MinimumChargeAmount = 0;
+        private const float k_InitialChargeAmount = 0;
         public ElectricCar(string i_modelName, string i_licansePlate)
-            : base(i_modelName, i_licansePlate, new ElectricPowertrain(k_minimumChargeAmount, k_BatteryVolume, k_initialChargeAmount))
+            : base(i_modelName, i_licansePlate, new ElectricPowertrain(k_MinimumChargeAmount, k_BatteryVolume, k_InitialChargeAmount))
         {
 
         }
