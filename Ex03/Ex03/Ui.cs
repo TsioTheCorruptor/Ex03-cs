@@ -2,6 +2,7 @@
 using System.Xml.Linq;
 using Ex03.GarageLogic;
 using Enums;
+using CostumExceptions;
 namespace UI
 {
     internal class Ui
@@ -12,20 +13,20 @@ namespace UI
         private readonly string[] m_DoorAmountsToEnter = { "2", "3", "4", "5" };
         GarageLogic m_Garage=new GarageLogic();
        
-
         // Keeps the same name, but now it's dynamically generated from the enum
         private readonly string[] m_VehicleTypesToEnter = Enum.GetNames(typeof(e_VehicleTypes));
-        private readonly string[] m_CarColorsToEnter = Enum.GetNames(typeof(e_carColors));
-        private readonly string[] m_LicenseTypeToEnter = Enum.GetNames(typeof(e_licenseType));
-        private readonly string[] m_FuelTypeToEnter = Enum.GetNames(typeof(e_FuelType));
+        private readonly string[] m_CarColorsToEnter = Enum.GetNames(typeof(CarColor));
+        private readonly string[] m_LicenseTypeToEnter = Enum.GetNames(typeof(MotorcycleLicenseType));
+        private readonly string[] m_WheelInputOptionsToEnter = {"enter pressure and manufacturer for all wheels","enter  individually" };
+        private readonly string[] m_FuelTypeToEnter = Enum.GetNames(typeof(FuelType));
         private readonly string[] m_UserOptionsStrings = { " Read Vehicle Data From File", "Add car to garage", 
                                                            "Get License Plate List", "Change Vehicle State",
                                                            "Fill Air In Tires", "Charge Fuel Vehicle",
-                                                           "Charge Electric Vehicle", "Charge Electric Vehicle",
+                                                           "Charge Electric Vehicle",
                                                            "ShowFullVehicleData","Quit" };
         public void Run()
         {
-
+            optionSelect();
         }
         private void optionSelect()
         {
@@ -96,17 +97,25 @@ namespace UI
             bool validNameIndex = true;
             m_IsvehicleValid = true;
             string? plateNumber;
+            string? modelName;
             int vehicleNameIndex;
-
+            bool entryExists;
             Console.WriteLine("Enter license plate number:");
             plateNumber = Console.ReadLine();
-
-            if (false) // TODO: check if already exists
+           
+            entryExists=m_Garage.DoesEntryAlreadyExist(plateNumber);
+            if (entryExists) // TODO: check if already exists
             {
-                // handle duplicate
+                string? newState;
+                Console.WriteLine("enter new vehicle state");
+                newState = Console.ReadLine();
+                m_Garage.ChangeVehicleState(newState,plateNumber);
             }
             else
             {
+                Console.WriteLine("Enter model name:");
+                modelName = Console.ReadLine();
+                
                 printStringArray(m_VehicleTypesToEnter, "Enter your Vehicle type:");
                 validNameIndex = int.TryParse(Console.ReadLine(), out vehicleNameIndex);
 
@@ -118,7 +127,7 @@ namespace UI
                 }
 
                 e_VehicleTypes selectedType = (e_VehicleTypes)vehicleNameIndex;
-                m_Garage.CreateTempVehicle(m_VehicleTypesToEnter[vehicleNameIndex], plateNumber);
+                m_Garage.CreateTempVehicle(plateNumber,m_VehicleTypesToEnter[vehicleNameIndex] ,modelName);
                 collectCommonData();
                 if (m_Garage.getCarEnergyType() == "Fuel") //make it enum
                 {
@@ -134,22 +143,33 @@ namespace UI
                     getDataFromUserDirectly(PropertyData.ToString(), PropertyData);
                 }
 
-
+               
                 // TODO: send to engine to create vehicle with data
 
             }
         }
         private void collectCommonData()
         {
-            getDataFromUserDirectly("Enter energy percentage:", Enums.e_VehicleDataKeys.EnergyPercentage);
+           
+            int wheelInputOption;
             
+            //getDataFromUserDirectly("Enter energy percentage:", Enums.e_VehicleDataKeys.EnergyPercentage);
 
-            for(int i=0; i<m_Garage.GetAmountOfWheelsInCurrentCar(); i++)
-            {
-                getDataFromUserDirectly("Enter wheel manufacturer name:", Enums.e_VehicleDataKeys.WheelManufacturer);
-                getDataFromUserDirectly(string.Format("Enter current air pressure in wheel {0}:", i+1),Enums.e_VehicleDataKeys.CurrentAirPressure);
-            }
+            wheelInputOption= getIndexFromOptions(m_WheelInputOptionsToEnter, "enter wheel input method");
             
+                if (wheelInputOption == 1)
+                {
+                    for (int i = 0; i < m_Garage.GetAmountOfWheelsInVehicleBeingCreated(); i++)
+                    {
+                        getDataFromUserDirectly("Enter wheel manufacturer name and air pressure in format- |name,pressure|:", e_VehicleDataKeys.WheelData);
+
+                    }
+
+                }
+                else
+                {
+                    getDataFromUserDirectly("Enter wheel manufacturer name and air pressure in format- |name,pressure|:", e_VehicleDataKeys.MultipleWheelData);
+                }
         }
 
        
@@ -157,7 +177,7 @@ namespace UI
         private void collectFuelData()
         {
             
-            getDataFromOptions( m_FuelTypeToEnter,"Enter fuel type index :", Enums.e_VehicleDataKeys.FuelType);
+            
             getDataFromUserDirectly("Enter current amount of fuel (liters):", Enums.e_VehicleDataKeys.CurrentFuelAmount);
             
         }
@@ -187,12 +207,7 @@ namespace UI
                 {
                     m_Garage.SetCreatedVehicleAttribute(i_DataKey, i_Options[data]);
                 }
-                catch (FormatException ex)
-                {
-                    Console.WriteLine(ex.Message);
-                    continue;
-                }
-                catch (ArgumentException ex)
+                catch (Exception ex)
                 {
                     Console.WriteLine(ex.Message);
                     continue;
@@ -222,16 +237,13 @@ namespace UI
                     }
 
                 }
-                catch (FormatException ex)
+                catch (Exception ex)
                 {
                     Console.WriteLine(ex.Message);
                     continue;
                 }
-                catch (ArgumentException ex)
-                {
-                    Console.WriteLine(ex.Message);
-                    continue;
-                }
+                
+
                 restartLoop = false;
             }
 
