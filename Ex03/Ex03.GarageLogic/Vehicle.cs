@@ -1,79 +1,95 @@
 ﻿using CostumExceptions;
 using BaseComponents;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace BaseVehicle
 {
     public abstract class Vehicle
     {
-        public readonly string m_modelName;
-        public readonly string m_licansePlate;
-        public readonly int m_maxNumOfWheels;
-        public readonly float m_minWheelPressure;
-        public readonly float m_maxWheelPressure;
-        protected readonly BasePowertrain m_powerTrain;
-        private List<Wheel> m_wheels;
+        private readonly string r_ModelName;
+        private readonly string r_LicansePlate;
+        private readonly int r_MaxNumOfWheels;
+        private readonly float r_MinWheelPressure;
+        private readonly float r_MaxWheelPressure;
+        protected readonly BasePowertrain r_PowerTrain;
+        private readonly List<Wheel> r_Wheels;
 
         public float EnergyPrecentage
         {
             get
             {
-                return m_powerTrain.GetEnergyPrecentage();
+                return r_PowerTrain.GetEnergyPrecentage();
             }
         }
 
         public Vehicle(string i_modelName, string i_licansePlate,int i_maxWheelCount , float i_minWheelPressure, float i_maxWheelPressure, BasePowertrain i_powerTrain)
         {
-            m_modelName = i_modelName;
-            m_licansePlate = i_licansePlate;
-            m_powerTrain = i_powerTrain;
-            m_maxNumOfWheels = i_maxWheelCount;
-            m_minWheelPressure = i_minWheelPressure;
-            m_maxWheelPressure = i_maxWheelPressure;
-            m_wheels = new List<Wheel>(i_maxWheelCount);
+            r_ModelName = i_modelName;
+            r_LicansePlate = i_licansePlate;
+            r_PowerTrain = i_powerTrain;
+            r_MaxNumOfWheels = i_maxWheelCount;
+            r_MinWheelPressure = i_minWheelPressure;
+            r_MaxWheelPressure = i_maxWheelPressure;
+            r_Wheels = new List<Wheel>(i_maxWheelCount);
+        }
+
+        public string GetModelName()
+        {
+            return r_ModelName;
+        }
+
+        public string GetLicansePlate()
+        {
+            return r_LicansePlate;
+        }
+
+        public int GetMaxNumOfWheels()
+        {
+            return r_MaxNumOfWheels;
+        }
+
+        public float GetMinWheelPressure()
+        {
+            return r_MinWheelPressure;
+        }
+
+        public float GetMaxWheelPressure()
+        {
+            return r_MaxWheelPressure;
         }
 
         public void AddWheel(string i_manufacturer, float i_initialPressure)
         {
-            if (m_wheels.Count >= m_maxNumOfWheels)
+            if (r_Wheels.Count >= r_MaxNumOfWheels)
             {
-                string messege = $"This vehicle already has the maximum of {m_maxNumOfWheels} wheels.";
+                string messege = $"This vehicle already has the maximum of {r_MaxNumOfWheels} wheels.";
                 throw new ArgumentException(messege);
             }
 
-            m_wheels.Add(new Wheel(i_manufacturer,m_maxWheelPressure,m_minWheelPressure,i_initialPressure));
+            r_Wheels.Add(new Wheel(i_manufacturer,r_MaxWheelPressure,r_MinWheelPressure,i_initialPressure));
         }
 
         public void InitAllWheels(string i_manufacturer, float i_initialPressure)
         {
-            if (m_wheels.Count > 0)
+            if (r_Wheels.Count > 0)
                 throw new ArgumentException("Wheels already initialised.");
 
-            for (int i = 0; i < this.m_maxNumOfWheels; i++)
+            for (int i = 0; i < this.r_MaxNumOfWheels; i++)
                 this.AddWheel(i_manufacturer, i_initialPressure);
         }
 
         public void InflateAllTiresToMax()
         {
 
-            if (m_wheels.Count == 0)
+            if (r_Wheels.Count == 0)
                 throw new InvalidOperationException("No wheels have been added.");
 
-            foreach (Wheel wheel in m_wheels)
+            foreach (Wheel wheel in r_Wheels)
             {
-                float delta = m_maxWheelPressure - wheel.Pressure;
+                float delta = wheel.GetMaxPressure() - wheel.Pressure;
                 if (delta > 0)
                     wheel.Inflate(delta);
             }
         }
-
-        public abstract void SetAllPropertiesFromOrderdListOfStrings(List<string> i_PropertyValuesList);
-
-        public abstract List<string> GetPropertyValuesAsListOfStrings();
 
 
         //* explenation
@@ -81,22 +97,43 @@ namespace BaseVehicle
         //it is code duplication, but this puts the responsebiliy of the developer who is adding the  vhicle type class.
         //we recognize it ( generic setters froms string) is bad practice,
         //but there was no other way to make "No code changes at all when adding a new type" as instructed.
+        public abstract void SetAllPropertiesFromOrderdListOfStrings(List<string> i_PropertyValuesList);
 
+        public abstract List<string> GetPropertyValuesAsListOfStrings();
+
+
+        // Has to be tightly coupled since vehicle type dictates the pressure.
+        // For now, it does not make sense for the wheels to be created outside of Vehicle
         protected class Wheel
         {
-            // Has to be tightly coupled since vehicle type dictates the pressure.
-            public readonly string m_manufacturer;
-            public readonly float m_maxPressure;
-            public readonly float m_minPressure;
+
+            private readonly string r_Manufacturer;
+            private readonly float r_MaxPressure;
+            private readonly float r_MinPressure;
             public float Pressure { get; set; }
 
             public Wheel(string i_manufacturer, float i_maxPressure, float i_minPressure, float i_initalPressure)
             {
-                m_manufacturer = i_manufacturer;
-                m_maxPressure = i_maxPressure;
-                m_minPressure = i_minPressure;
+                r_Manufacturer = i_manufacturer;
+                r_MaxPressure = i_maxPressure;
+                r_MinPressure = i_minPressure;
                 Pressure = i_minPressure;
                 this.Inflate(i_initalPressure);
+            }
+
+            public string GetManufacturer()
+            {
+                return r_Manufacturer;
+            }
+
+            public float GetMaxPressure()
+            {
+                return r_MaxPressure;
+            }
+
+            public float GetMinPressure()
+            {
+                return r_MinPressure;
             }
 
             public void Inflate(float i_addedPressure)
@@ -108,14 +145,14 @@ namespace BaseVehicle
                 }
 
                 float desiredPressure = this.Pressure + i_addedPressure;
-                if (desiredPressure <= this.m_maxPressure && desiredPressure >= this.m_minPressure)
+                if (desiredPressure <= this.r_MaxPressure && desiredPressure >= this.r_MinPressure)
                 {
                     this.Pressure = desiredPressure;
                 }
                 else
                 {
-                    string messege = $"Error: Wheel pressure range exceeded. range: from {m_minPressure} PSI to {m_maxPressure} PSI,  but was set to {desiredPressure}";
-                    throw new ValueRangeException(messege, m_minPressure, m_maxPressure);
+                    string messege = $"Error: Wheel pressure range exceeded. range: from {r_MinPressure} PSI to {r_MaxPressure} PSI,  but was set to {desiredPressure}";
+                    throw new ValueRangeException(messege, r_MinPressure, r_MaxPressure);
                 }
             }
         }

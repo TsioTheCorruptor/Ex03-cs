@@ -1,15 +1,9 @@
 ﻿using BaseComponents;
 using BaseVehicle;
-using Enums;
-using System.Collections.Generic;
-using System.Diagnostics;
-using System.Diagnostics.Contracts;
-using System.Globalization;
-using System.Runtime.InteropServices;
 
-namespace Ex03.GarageLogic.VehicleTypes
+namespace Ex03.GarageLogic.BaseVehicleTypes
 {
-    public class BaseTruck: BaseVehicle.Vehicle
+    public class BaseTruck: Vehicle
     {
         //Given Consts
         private const int k_NumOfWheels = 12;
@@ -26,7 +20,8 @@ namespace Ex03.GarageLogic.VehicleTypes
         //explenation in *
         private readonly IReadOnlyList<Type> sr_PropertyTypes = new List<Type>(k_NumberOfProperties)
         { typeof(bool), typeof(float) }.AsReadOnly();
-    public BaseTruck(string i_modelName, string i_licansePlate, BasePowertrain i_powerTrain)
+
+        public BaseTruck(string i_modelName, string i_licansePlate, BasePowertrain i_powerTrain)
             : base(i_modelName, i_licansePlate, k_NumOfWheels, k_WheelMinPressure, k_MaxWheelsPressure, i_powerTrain)
         {
 
@@ -56,7 +51,7 @@ namespace Ex03.GarageLogic.VehicleTypes
                 throw new FormatException(messege);
             }
 
-            if (!float.TryParse(i_PropertyValuesList[1],NumberStyles.Float,CultureInfo.InvariantCulture,out float volume))
+            if (!float.TryParse(i_PropertyValuesList[1],out float volume))
             {
                 throw new FormatException(
                     $"\"{i_PropertyValuesList[1]}\" is not a valid floating-point number.");

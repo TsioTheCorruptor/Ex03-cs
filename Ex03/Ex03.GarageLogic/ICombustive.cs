@@ -7,7 +7,7 @@ namespace Ex03.GarageLogic.Combustive
         public float GetMaxFuelAmount();
         public float GetFuelRemainingAmount();
         public FuelType GetFuelType();
-        public void Fuel(FuelType i_fuelType, float i_literFuelAmount);
+        public void Fuel(FuelType i_FuelType, float i_LiterFuelAmount);
 
     }
 }

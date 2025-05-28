@@ -1,16 +1,10 @@
 ﻿using BaseComponents;
 using Enums;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 using BaseVehicle;
-using System.Globalization;
 
-namespace Ex03.GarageLogic.VehicleTypes
+namespace Ex03.GarageLogic.BaseVehicleTypes
 {
-    public class Car : BaseVehicle.Vehicle
+    public class BaseCar : Vehicle
     {
         //Given Consts
         private const int k_NumOfWheels = 5;
@@ -26,7 +20,7 @@ namespace Ex03.GarageLogic.VehicleTypes
         private readonly IReadOnlyList<Type> sr_PropertyTypes = new List<Type>(k_NumberOfProperties)
         { typeof(Enum), typeof(int) }.AsReadOnly();
 
-        public Car(string i_modelName, string i_licansePlate, BasePowertrain i_powerTrain)
+        public BaseCar(string i_modelName, string i_licansePlate, BasePowertrain i_powerTrain)
             : base(i_modelName, i_licansePlate, k_NumOfWheels, k_WheelMinPressure, k_MaxWheelsPressure, i_powerTrain)
         {
 

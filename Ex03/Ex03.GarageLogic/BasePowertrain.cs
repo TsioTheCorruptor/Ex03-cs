@@ -10,9 +10,9 @@ namespace BaseComponents
 {
     public class BasePowertrain
     {
-        protected readonly float m_minimumEnergy;
-        protected readonly float m_maximumEnergy;
-        protected float m_remaningEnergy;
+        protected readonly float r_MinimumEnergy;
+        protected readonly float r_MaximumEnergy;
+        protected float m_RemaningEnergy;
         
         public BasePowertrain(float i_minimumEnergy, float i_maximumEnergy, float i_remaningEnergy)
         {
@@ -26,19 +26,19 @@ namespace BaseComponents
                 string messege = $"Error: Cannot set Maximum powertrain energy below or equal to Minimum powertrain energy: Minimum: {i_minimumEnergy} Maximum: {i_maximumEnergy}";
                 throw new ArgumentException(messege);
             }
-            if (i_remaningEnergy > i_maximumEnergy || i_remaningEnergy < m_minimumEnergy)
+            if (i_remaningEnergy > i_maximumEnergy || i_remaningEnergy < r_MinimumEnergy)
             {
                 string messege = $"Error: Initial power train energy was set out of range: from {i_minimumEnergy} Units to {i_maximumEnergy} Units,  but was set to {i_remaningEnergy} Hrs";
                 throw new ValueRangeException(messege, i_minimumEnergy, i_maximumEnergy);
             }
-            m_minimumEnergy = i_minimumEnergy;
-            m_maximumEnergy = i_maximumEnergy;
-            m_remaningEnergy = i_remaningEnergy;
+            r_MinimumEnergy = i_minimumEnergy;
+            r_MaximumEnergy = i_maximumEnergy;
+            m_RemaningEnergy = i_remaningEnergy;
         }
 
         public float GetEnergyPrecentage()
         { 
-            return (m_remaningEnergy - m_minimumEnergy) / (m_maximumEnergy - m_minimumEnergy);
+            return (m_RemaningEnergy - r_MinimumEnergy) / (r_MaximumEnergy - r_MinimumEnergy);
         }
 
     }

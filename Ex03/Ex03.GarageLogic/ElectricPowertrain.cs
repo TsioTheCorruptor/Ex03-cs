@@ -13,12 +13,12 @@ namespace Ex03.GarageLogic.Components
 
         public float GetRemaningCharge()
         {
-            return this.m_remaningEnergy;
+            return this.m_RemaningEnergy;
         }
 
         public float GetMaxCharge()
         {
-            return this.m_maximumEnergy;
+            return this.r_MaximumEnergy;
         }
 
         public void Charge(float i_timeToCharge)
@@ -29,15 +29,15 @@ namespace Ex03.GarageLogic.Components
                 throw new ArgumentException(messege);
             }
 
-            float resultingRemaningCharge = this.m_remaningEnergy + i_timeToCharge;
-            if (resultingRemaningCharge <= this.m_maximumEnergy && resultingRemaningCharge >= this.m_minimumEnergy)
+            float resultingRemaningCharge = this.m_RemaningEnergy + i_timeToCharge;
+            if (resultingRemaningCharge <= this.r_MaximumEnergy && resultingRemaningCharge >= this.r_MinimumEnergy)
             {
-                this.m_remaningEnergy = resultingRemaningCharge;
+                this.m_RemaningEnergy = resultingRemaningCharge;
             }
             else
             {
-                string messege = $"Error: Battery charge exceeded allowed range. range: from {m_minimumEnergy} Hrs to {m_maximumEnergy} Hrs,  but was set to {resultingRemaningCharge} Hrs";
-                throw new ValueRangeException(messege, m_minimumEnergy, m_maximumEnergy);
+                string messege = $"Error: Battery charge exceeded allowed range. range: from {r_MinimumEnergy} Hrs to {r_MaximumEnergy} Hrs,  but was set to {resultingRemaningCharge} Hrs";
+                throw new ValueRangeException(messege, r_MinimumEnergy, r_MaximumEnergy);
             }
         }
     }

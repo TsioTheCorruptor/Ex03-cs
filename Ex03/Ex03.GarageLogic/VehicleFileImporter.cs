@@ -1,13 +1,7 @@
-﻿using System;
-using System.Collections.Generic;
-using System.IO;
-using System.Linq;
-using System.Reflection;
-using BaseVehicle;               
-using Ex03.GarageLogic;          
+﻿using BaseVehicle;                       
 using Ex03.GarageLogic.Combustive;
 using Ex03.GarageLogic.Electric;
-using Ex03.GarageLogic.Vehicles; 
+using System.ComponentModel;
 
 namespace Ex03.GarageLogic.IO
 {
@@ -38,11 +32,9 @@ namespace Ex03.GarageLogic.IO
                     throw new FormatException($"Invalid line – expected 8 comma‑separated fields but got {parts.Length}: '{rawLine}'.");
                 }
 
-                // ─── 1 Parse basic data ────────────────────────────────────────
                 string ownerName = parts[0];
                 string ownerPhone = parts[1];
                 string vehicleTypeString = parts[2];
-                //todo: create vihcle here than we can check the others
                 string licenceId = parts[3];
                 string modelName = parts[4];
                 string wheelManufacturer = parts[5];
@@ -56,6 +48,7 @@ namespace Ex03.GarageLogic.IO
                 }
 
                 Vehicle vehicle = VehicleCreator.CreateVehicle(vehicleTypeString, licenceId, modelName);
+                
                 if (vehicle == null)
                 {
                     throw new ArgumentException($"Vehicle type '{vehicleTypeString}' is not supported.");
@@ -73,35 +66,15 @@ namespace Ex03.GarageLogic.IO
                         cVehicle.Fuel(cVehicle.GetFuelType(), energyAmount);
                         break;
                 }
+                List<string> specialPropertyList = parts.Skip(8).ToList();
 
-                //todo: find how to add these generically
-                PrintSpecialProperties(vehicle);
+                vehicle.SetAllPropertiesFromOrderdListOfStrings(specialPropertyList);
                 
                 
                 entries.Add(new GarageEntry(vehicle, ownerName, ownerPhone));
             }
 
             return entries;
-        }
-
-        /// <summary>
-        /// this is just for debug for now
-        /// </summary>
-        private static void PrintSpecialProperties(Vehicle i_Vehicle)
-        {
-            Console.WriteLine($"Special properties for {i_Vehicle.GetType().Name}:");
-            PropertyInfo[] declared = i_Vehicle.GetType()
-                                               .GetProperties(BindingFlags.Instance | BindingFlags.Public | BindingFlags.DeclaredOnly);
-            if (declared.Length == 0)
-            {
-                Console.WriteLine("  (none)");
-                return;
-            }
-
-            foreach (PropertyInfo pi in declared)
-            {
-                Console.WriteLine($"  {pi.Name} = {pi.GetValue(i_Vehicle)}");
-            }
         }
     }
 }

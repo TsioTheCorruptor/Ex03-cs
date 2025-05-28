@@ -3,13 +3,13 @@ using BaseVehicle;
 using Enums;
 using BaseComponents;
 
-namespace Ex03.GarageLogic.VehicleTypes
+namespace Ex03.GarageLogic.BaseVehicleTypes
 {
-    public class Motorcycle: BaseVehicle.Vehicle
+    public class BaseMotorcycle: Vehicle
     {
         //Given Consts
-        private const int k_numOfWheels = 2;
-        private const float k_maxWheelsPressure = 30f;
+        private const int k_NumOfWheels = 2;
+        private const float k_MaxWheelsPressure = 30f;
         private const float k_WheelMinPressure = 0f;
         public MotorcycleLicenseType LicenceType { get; set; }
         public int EngineVolume { get; set; }
@@ -23,18 +23,19 @@ namespace Ex03.GarageLogic.VehicleTypes
         private readonly IReadOnlyList<Type> sr_PropertyTypes = new List<Type>(k_NumberOfProperties)
         { typeof(Enum), typeof(int) }.AsReadOnly();
 
-        public Motorcycle (string i_modelName, string i_licansePlate, BasePowertrain i_powerTrain)
-            : base(i_modelName, i_licansePlate, k_numOfWheels, k_WheelMinPressure, k_maxWheelsPressure, i_powerTrain)
+        public BaseMotorcycle (string i_modelName, string i_licansePlate, BasePowertrain i_powerTrain)
+            : base(i_modelName, i_licansePlate, k_NumOfWheels, k_WheelMinPressure, k_MaxWheelsPressure, i_powerTrain)
         {
 
         }
 
-
+        //part of *
         public IReadOnlyList<string> GetPropertyNamesList()
         {
             return sr_PropertyNames;
         }
 
+        //part of *
         public IReadOnlyList<Type> GetPropertyTypesList()
         {
             return sr_PropertyTypes;
