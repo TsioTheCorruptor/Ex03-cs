@@ -76,7 +76,7 @@ namespace Ex03.GarageLogic.IO
 
                 //todo: find how to add these generically
                 PrintSpecialProperties(vehicle);
-
+                
                 
                 entries.Add(new GarageEntry(vehicle, ownerName, ownerPhone));
             }
