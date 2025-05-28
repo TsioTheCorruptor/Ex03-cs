@@ -10,17 +10,17 @@ namespace Ex03.GarageLogic.BaseVehicleTypes
         private const int k_NumOfWheels = 2;
         private const float k_MaxWheelsPressure = 30f;
         private const float k_WheelMinPressure = 0f;
-        public MotorcycleLicenseType LicenceType { get; set; }
+        public eMotorcycleLicenseType LicenceType { get; set; }
         public int EngineVolume { get; set; }
 
         //part of *
         private const int k_NumberOfProperties = 2;
         //part of *
         private static readonly IReadOnlyList<string> sr_PropertyNames = new List<string>(k_NumberOfProperties)
-        { "CarColor", "NumberOfDoors" }.AsReadOnly();
+        { "LicenceType", "EngineVolume" }.AsReadOnly();
         //part of *
-        private readonly IReadOnlyList<Type> sr_PropertyTypes = new List<Type>(k_NumberOfProperties)
-        { typeof(Enum), typeof(int) }.AsReadOnly();
+        private readonly IReadOnlyList<string> sr_PropertyTypes = new List<string>(k_NumberOfProperties)
+        { "name", "int" }.AsReadOnly();
 
         public BaseMotorcycle (string i_modelName, string i_licansePlate, BasePowertrain i_powerTrain)
             : base(i_modelName, i_licansePlate, k_NumOfWheels, k_WheelMinPressure, k_MaxWheelsPressure, i_powerTrain)
@@ -29,13 +29,13 @@ namespace Ex03.GarageLogic.BaseVehicleTypes
         }
 
         //part of *
-        public IReadOnlyList<string> GetPropertyNamesList()
+        override public IReadOnlyList<string> GetPropertyNamesList()
         {
             return sr_PropertyNames;
         }
 
         //part of *
-        public IReadOnlyList<Type> GetPropertyTypesList()
+       override public IReadOnlyList<string> GetPropertyTypesList()
         {
             return sr_PropertyTypes;
         }
@@ -48,8 +48,8 @@ namespace Ex03.GarageLogic.BaseVehicleTypes
                 throw new FormatException(messege);
             }
 
-            if (!Enum.TryParse<MotorcycleLicenseType>(i_PropertyValuesList[0], ignoreCase: true, out var licenseType) 
-                || !Enum.IsDefined(typeof(MotorcycleLicenseType), licenseType))
+            if (!Enum.TryParse<eMotorcycleLicenseType>(i_PropertyValuesList[0], ignoreCase: true, out var licenseType) 
+                || !Enum.IsDefined(typeof(eMotorcycleLicenseType), licenseType))
             {
                 throw new FormatException($"\"{i_PropertyValuesList[0]}\" is not a valid Motorcycle License Type value.");
             }

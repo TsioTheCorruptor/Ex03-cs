@@ -10,15 +10,15 @@ namespace Ex03.GarageLogic.BaseVehicleTypes
         private const int k_NumOfWheels = 5;
         private const float k_MaxWheelsPressure = 32f;
         private const float k_WheelMinPressure = 0f;
-        public CarColor CarColor { get; set; }
+        public eCarColor CarColor { get; set; }
         public int NumberOfDoors { get; set; }
         private const int k_NumberOfProperties = 2;
         //part of *
         private static readonly IReadOnlyList<string> sr_PropertyNames = new List<string>(k_NumberOfProperties)
         { "CarColor", "NumberOfDoors" }.AsReadOnly();
         //part of *
-        private readonly IReadOnlyList<Type> sr_PropertyTypes = new List<Type>(k_NumberOfProperties)
-        { typeof(Enum), typeof(int) }.AsReadOnly();
+        private readonly IReadOnlyList<string> sr_PropertyTypes = new List<string>(k_NumberOfProperties)
+        { "name","int" }.AsReadOnly();
 
         public BaseCar(string i_modelName, string i_licansePlate, BasePowertrain i_powerTrain)
             : base(i_modelName, i_licansePlate, k_NumOfWheels, k_WheelMinPressure, k_MaxWheelsPressure, i_powerTrain)
@@ -26,12 +26,12 @@ namespace Ex03.GarageLogic.BaseVehicleTypes
 
         }
 
-        public IReadOnlyList<string> GetPropertyNamesList()
+       override public IReadOnlyList<string> GetPropertyNamesList()
         {
             return sr_PropertyNames;
         }
 
-        public IReadOnlyList<Type> GetPropertyTypesList()
+       override public IReadOnlyList<string> GetPropertyTypesList()
         {
             return sr_PropertyTypes;
         }
@@ -44,7 +44,7 @@ namespace Ex03.GarageLogic.BaseVehicleTypes
                 throw new FormatException(messege);
             }
 
-            if (!Enum.TryParse<CarColor>(i_PropertyValuesList[0], ignoreCase: true, out var color) || !Enum.IsDefined(typeof(CarColor), color))
+            if (!Enum.TryParse<eCarColor>(i_PropertyValuesList[0], ignoreCase: true, out var color) || !Enum.IsDefined(typeof(eCarColor), color))
             {
                 throw new FormatException(
                     $"\"{i_PropertyValuesList[0]}\" is not a valid Car Color value.");

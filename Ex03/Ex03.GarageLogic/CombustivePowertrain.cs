@@ -8,8 +8,8 @@ namespace Ex03.GarageLogic
 {
     public class CombustivePowertrain: BasePowertrain, ICombustive
     {
-        private readonly FuelType r_FuelType;
-        public CombustivePowertrain(float i_minFuelAmount,float i_maxFuelAmount, float i_initialFuelAmount, FuelType i_fuelType)
+        private readonly eFuelType r_FuelType;
+        public CombustivePowertrain(float i_minFuelAmount,float i_maxFuelAmount, float i_initialFuelAmount, eFuelType i_fuelType)
             : base(i_minFuelAmount, i_maxFuelAmount, i_initialFuelAmount)
         {
             this.r_FuelType = i_fuelType;
@@ -24,12 +24,12 @@ namespace Ex03.GarageLogic
             return this.m_RemaningEnergy;
         }
 
-        public FuelType GetFuelType()
+        public eFuelType GetFuelType()
         {
             return this.r_FuelType;
         }
 
-        public void Fuel(FuelType i_fuelType, float i_literFuelAmount)
+        public void Fuel(eFuelType i_fuelType, float i_literFuelAmount)
         {
             if(i_fuelType != this.r_FuelType)
             {

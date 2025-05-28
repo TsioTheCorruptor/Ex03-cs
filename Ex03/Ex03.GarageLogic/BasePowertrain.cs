@@ -34,6 +34,17 @@ namespace BaseComponents
         { 
             return (m_RemaningEnergy - r_MinimumEnergy) / (r_MaximumEnergy - r_MinimumEnergy);
         }
+        public void SetEnergyPercentage(float i_Percentage)
+        {
+            float decimalPercentage=i_Percentage/100;
+            if (decimalPercentage < 0f || decimalPercentage > 1f)
+            {
+                string message = $"Error: Energy percentage must be between 0 and 100. Received: {i_Percentage}";
+                throw new ValueRangeException(message, 0f, 1f);
+            }
+
+            m_RemaningEnergy = r_MinimumEnergy + decimalPercentage * (r_MaximumEnergy - r_MinimumEnergy);
+        }
 
     }
 }

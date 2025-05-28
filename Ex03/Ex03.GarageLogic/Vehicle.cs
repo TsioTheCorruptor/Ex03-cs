@@ -11,7 +11,7 @@ namespace BaseVehicle
         private readonly float r_MinWheelPressure;
         private readonly float r_MaxWheelPressure;
         protected readonly BasePowertrain r_PowerTrain;
-        private readonly List<Wheel> r_Wheels;
+         readonly List<Wheel> r_Wheels;
 
         public float EnergyPrecentage
         {
@@ -81,7 +81,7 @@ namespace BaseVehicle
         {
 
             if (r_Wheels.Count == 0)
-                throw new InvalidOperationException("No wheels have been added.");
+                throw new ArgumentException("No wheels have been added.");
 
             foreach (Wheel wheel in r_Wheels)
             {
@@ -90,7 +90,10 @@ namespace BaseVehicle
                     wheel.Inflate(delta);
             }
         }
-
+        public void SetEnergyPercentage(float i_Percentage)
+        {
+            this.r_PowerTrain.SetEnergyPercentage(i_Percentage);
+        }
 
         //* explenation
         //Again this is the only way to enshure when adding a new base Vehicle type, no changes will be made
@@ -100,7 +103,24 @@ namespace BaseVehicle
         public abstract void SetAllPropertiesFromOrderdListOfStrings(List<string> i_PropertyValuesList);
 
         public abstract List<string> GetPropertyValuesAsListOfStrings();
+        public abstract IReadOnlyList<string> GetPropertyNamesList();
+        public abstract IReadOnlyList<string> GetPropertyTypesList();
+        public List<string> GetAllWheelData()
+        {
+            if (r_Wheels.Count == 0)
+            {
+                throw new ArgumentException("No wheels have been added to the vehicle.");
+            }
 
+            List<string> o_WheelDataList = new List<string>(r_Wheels.Count);
+            foreach (Wheel wheel in r_Wheels)
+            {
+                string data = string.Format("{0}-{1}", wheel.GetManufacturer(), wheel.Pressure);
+                o_WheelDataList.Add(data);
+            }
+
+            return o_WheelDataList;
+        }
 
         // Has to be tightly coupled since vehicle type dictates the pressure.
         // For now, it does not make sense for the wheels to be created outside of Vehicle

@@ -24,24 +24,34 @@ namespace Ex03.GarageLogic.IO
                 {
                     continue;
                 }
+                if(rawLine== "*****")
+                {
+                    break;
+                }
 
                 string[] parts = rawLine.Split(',', StringSplitOptions.TrimEntries);
                 if (parts.Length < 8)
                 {
                     throw new FormatException($"Invalid line – expected 8 comma‑separated fields but got {parts.Length}: '{rawLine}'.");
                 }
-
-                string ownerName = parts[0];
-                string ownerPhone = parts[1];
-                string vehicleTypeString = parts[2];
-                string licenceId = parts[3];
-                string modelName = parts[4];
-                string wheelManufacturer = parts[5];
-                if (!float.TryParse(parts[6], out float wheelPressure))
+                string vehicleTypeString = parts[0];
+                string licenceId = parts[1];
+                string modelName = parts[2];
+                string energyAmountStr = parts[3];
+                string wheelManufacturer = parts[4];
+                string wheelPressureStr= parts[5];
+                string ownerName = parts[6];
+                
+                string ownerPhone = parts[7];
+                
+                
+               
+                
+                if (!float.TryParse(wheelPressureStr, out float wheelPressure))
                 {
                     throw new FormatException($"Wheel pressure is not a valid float: '{parts[6]}' in line '{rawLine}'.");
                 }
-                if (!float.TryParse(parts[7], out float energyAmount))
+                if (!float.TryParse(energyAmountStr, out float energyPercentage))
                 {
                     throw new FormatException($"Energy amount is not a valid float: '{parts[7]}' in line '{rawLine}'.");
                 }
@@ -56,15 +66,7 @@ namespace Ex03.GarageLogic.IO
                 vehicle.InitAllWheels(wheelManufacturer, wheelPressure);
 
 
-                switch (vehicle)
-                {
-                    case IElectric eVehicle:
-                        eVehicle.Charge(energyAmount);
-                        break;
-                    case ICombustive cVehicle:
-                        cVehicle.Fuel(cVehicle.GetFuelType(), energyAmount);
-                        break;
-                }
+                vehicle.SetEnergyPercentage(energyPercentage);
                 List<string> specialPropertyList = parts.Skip(8).ToList();
 
                 vehicle.SetAllPropertiesFromOrderdListOfStrings(specialPropertyList);

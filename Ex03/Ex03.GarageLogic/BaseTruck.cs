@@ -18,8 +18,8 @@ namespace Ex03.GarageLogic.BaseVehicleTypes
         private static readonly IReadOnlyList<string> sr_PropertyNames = new List<string>(k_NumberOfProperties) 
         { "IsCarryingHazardousMaterials", "CargoVolume" }.AsReadOnly();
         //explenation in *
-        private readonly IReadOnlyList<Type> sr_PropertyTypes = new List<Type>(k_NumberOfProperties)
-        { typeof(bool), typeof(float) }.AsReadOnly();
+        private readonly IReadOnlyList<string> sr_PropertyTypes = new List<string>(k_NumberOfProperties)
+        { "true or false", "float" }.AsReadOnly();
 
         public BaseTruck(string i_modelName, string i_licansePlate, BasePowertrain i_powerTrain)
             : base(i_modelName, i_licansePlate, k_NumOfWheels, k_WheelMinPressure, k_MaxWheelsPressure, i_powerTrain)
@@ -27,12 +27,12 @@ namespace Ex03.GarageLogic.BaseVehicleTypes
 
         }
 
-        public IReadOnlyList<string> GetPropertyNamesList()
+        override public IReadOnlyList<string> GetPropertyNamesList()
         {
             return sr_PropertyNames;
         }
 
-        public IReadOnlyList<Type> GetPropertyTypesList()
+        override public IReadOnlyList<string> GetPropertyTypesList()
         {
             return sr_PropertyTypes;
         }
@@ -67,7 +67,7 @@ namespace Ex03.GarageLogic.BaseVehicleTypes
             string asStringCargoVolume = CargoVolume.ToString();
             string asStringIsHazardus = IsCarryingHazardousMaterials.ToString();
 
-            o_ListOfValues = new List<string>() { asStringIsHazardus, asStringIsHazardus };
+            o_ListOfValues = new List<string>() { asStringIsHazardus, asStringCargoVolume};
 
             return o_ListOfValues;
         }

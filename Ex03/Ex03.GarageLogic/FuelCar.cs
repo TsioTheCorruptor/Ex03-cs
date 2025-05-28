@@ -9,9 +9,9 @@ namespace Ex03.GarageLogic
         private const float k_FuelTankVolume = 48f;
         private const float k_MinimumFuelAmount = 0;
         private const float k_InitialFuelAmount = 0;
-        private const FuelType k_DefaultFuelType = FuelType.Octan95;
+        private const eFuelType k_DefaultFuelType = eFuelType.Octan95;
         public FuelCar(string i_modelName, string i_licansePlate)
-            : base(i_modelName, i_licansePlate, new CombustivePowertrain(k_MinimumFuelAmount, k_FuelTankVolume, k_InitialFuelAmount, k_DefaultFuelType))
+            : base( i_licansePlate,i_modelName, new CombustivePowertrain(k_MinimumFuelAmount, k_FuelTankVolume, k_InitialFuelAmount, k_DefaultFuelType))
         {
 
         }
@@ -24,11 +24,11 @@ namespace Ex03.GarageLogic
         {
             return ((ICombustive)this.r_PowerTrain).GetFuelRemainingAmount();
         }
-        public FuelType GetFuelType()
+        public eFuelType GetFuelType()
         {
             return ((ICombustive)this.r_PowerTrain).GetFuelType();
         }
-        public void Fuel(FuelType i_fuelType, float i_literFuelAmount)
+        public void Fuel(eFuelType i_fuelType, float i_literFuelAmount)
         {
             ((ICombustive)this.r_PowerTrain).Fuel(i_fuelType, i_literFuelAmount);
         }
