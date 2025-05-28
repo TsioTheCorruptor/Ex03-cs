@@ -71,6 +71,17 @@ namespace BaseVehicle
             }
         }
 
+        public abstract void SetAllPropertiesFromOrderdListOfStrings(List<string> i_PropertyValuesList);
+
+        public abstract List<string> GetPropertyValuesAsListOfStrings();
+
+
+        //* explenation
+        //Again this is the only way to enshure when adding a new base Vehicle type, no changes will be made
+        //it is code duplication, but this puts the responsebiliy of the developer who is adding the  vhicle type class.
+        //we recognize it ( generic setters froms string) is bad practice,
+        //but there was no other way to make "No code changes at all when adding a new type" as instructed.
+
         protected class Wheel
         {
             // Has to be tightly coupled since vehicle type dictates the pressure.
@@ -84,7 +95,8 @@ namespace BaseVehicle
                 m_manufacturer = i_manufacturer;
                 m_maxPressure = i_maxPressure;
                 m_minPressure = i_minPressure;
-                Pressure = i_initalPressure;
+                Pressure = i_minPressure;
+                this.Inflate(i_initalPressure);
             }
 
             public void Inflate(float i_addedPressure)
