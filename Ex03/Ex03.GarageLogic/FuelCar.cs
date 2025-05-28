@@ -1,6 +1,6 @@
 ﻿using Enums;
 using Ex03.GarageLogic.Combustive;
-using Ex03.GarageLogic.VehicleTypes;
+using Ex03.GarageLogic.BaseVehicleTypes;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -9,7 +9,7 @@ using System.Threading.Tasks;
 
 namespace Ex03.GarageLogic
 {
-    internal class FuelCar: Car, ICombustive
+    internal class FuelCar: BaseCar, ICombustive
     {
         private const float k_fuelTankVolume = 48f;
         private const float k_minimumFuelAmount = 0;

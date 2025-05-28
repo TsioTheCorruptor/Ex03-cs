@@ -1,11 +1,11 @@
 ﻿using Enums;
 using Ex03.GarageLogic.Combustive;
-using Ex03.GarageLogic.VehicleTypes;
+using Ex03.GarageLogic.BaseVehicleTypes;
 
 
 namespace Ex03.GarageLogic.Vehicles
 {
-    public class FuelMotorcycle: Motorcycle, ICombustive
+    public class FuelMotorcycle: BaseMotorcycle, ICombustive
     {
         private const float k_fuelTankVolume = 5.8f;
         private const float k_minimumFuelAmount = 0;

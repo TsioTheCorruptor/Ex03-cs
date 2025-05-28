@@ -1,6 +1,6 @@
 ﻿using Enums;
 using Ex03.GarageLogic.Combustive;
-using Ex03.GarageLogic.VehicleTypes;
+using Ex03.GarageLogic.BaseVehicleTypes;
 
 namespace Ex03.GarageLogic
 {

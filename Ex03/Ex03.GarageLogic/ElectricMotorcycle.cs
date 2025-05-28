@@ -1,11 +1,11 @@
 ﻿using Enums;
 using Ex03.GarageLogic.Components;
 using Ex03.GarageLogic.Electric;
-using Ex03.GarageLogic.VehicleTypes;
+using Ex03.GarageLogic.BaseVehicleTypes;
 
 namespace Ex03.GarageLogic.Vehicles
 {
-    public class ElectricMotorcycle: Motorcycle, IElectric
+    public class ElectricMotorcycle: BaseMotorcycle, IElectric
     {
         private const float k_BatteryVolume = 3.2f;
         private const float k_minimumChargeAmount = 0;
