@@ -3,22 +3,19 @@ using System.Xml.Linq;
 using Ex03.GarageLogic;
 using Enums;
 using CostumExceptions;
+using Ex03.GarageLogic.IO;
 namespace UI
 {
     internal class Ui
     {
         private enum e_UserOptions { ReadVehicleDataFromFile, AddVehicle,GetLicensePlateList,ChangeVehicleState,
                                      FillAirInTires,ChargeFuelVehicle,ChargeElectricVehicle,ShowFullVehicleData,Quit }
-        private bool m_IsvehicleValid = true;
-        private readonly string[] m_DoorAmountsToEnter = { "2", "3", "4", "5" };
         GarageLogic m_Garage=new GarageLogic();
        
         // Keeps the same name, but now it's dynamically generated from the enum
         private readonly string[] m_VehicleTypesToEnter = Enum.GetNames(typeof(e_VehicleTypes));
-        private readonly string[] m_CarColorsToEnter = Enum.GetNames(typeof(CarColor));
-        private readonly string[] m_LicenseTypeToEnter = Enum.GetNames(typeof(MotorcycleLicenseType));
+        private readonly string[] m_VehicleStatesToEnter = Enum.GetNames(typeof(GarageEntryStatus));
         private readonly string[] m_WheelInputOptionsToEnter = {"enter pressure and manufacturer for all wheels","enter  individually" };
-        private readonly string[] m_FuelTypeToEnter = Enum.GetNames(typeof(FuelType));
         private readonly string[] m_UserOptionsStrings = { " Read Vehicle Data From File", "Add car to garage", 
                                                            "Get License Plate List", "Change Vehicle State",
                                                            "Fill Air In Tires", "Charge Fuel Vehicle",
@@ -38,7 +35,14 @@ namespace UI
                 switch (option)
                 {
                     case e_UserOptions.ReadVehicleDataFromFile:
-                        // Add logic here
+                        try
+                        {
+                            m_Garage.ReadVehicleDataFromFile();
+                        }
+                        catch (Exception exception)
+                        {
+                            Console.WriteLine(exception.Message);
+                        }
                         break;
                     case e_UserOptions.AddVehicle:
                         AddVehicle();
@@ -47,7 +51,11 @@ namespace UI
 
                         break;
                     case e_UserOptions.ChangeVehicleState:
-
+                        string? plateNumber;
+                        int stateIndex;
+                        plateNumber=Console.ReadLine();
+                       stateIndex= getIndexFromOptions(m_VehicleStatesToEnter,"select new state");
+                        m_Garage.ChangeVehicleState((GarageEntryStatus)stateIndex, plateNumber);
                         break;
                     case e_UserOptions.FillAirInTires:
 
@@ -95,7 +103,6 @@ namespace UI
         public void AddVehicle()
         {
             bool validNameIndex = true;
-            m_IsvehicleValid = true;
             string? plateNumber;
             string? modelName;
             int vehicleNameIndex;
@@ -106,10 +113,8 @@ namespace UI
             entryExists=m_Garage.DoesEntryAlreadyExist(plateNumber);
             if (entryExists) // TODO: check if already exists
             {
-                string? newState;
-                Console.WriteLine("enter new vehicle state");
-                newState = Console.ReadLine();
-                m_Garage.ChangeVehicleState(newState,plateNumber);
+                Console.WriteLine("Entry already exists , Changing state to |Repair in Progress|");
+                m_Garage.ChangeVehicleState(GarageEntryStatus.RepairInProgress,plateNumber);
             }
             else
             {
@@ -129,14 +134,18 @@ namespace UI
                 e_VehicleTypes selectedType = (e_VehicleTypes)vehicleNameIndex;
                 m_Garage.CreateTempVehicle(plateNumber,m_VehicleTypesToEnter[vehicleNameIndex] ,modelName);
                 collectCommonData();
-                if (m_Garage.getCarEnergyType() == "Fuel") //make it enum
+                if (m_Garage.getCarEnergyType() == GarageLogic.AvailableEnergyTypes.fuel) //make it enum
                 {
                     collectFuelData();
                 }
-                else if (m_Garage.getCarEnergyType() == "Electric")
+                else
                 {
-                    collectElectricData();
+                    if (m_Garage.getCarEnergyType() == GarageLogic.AvailableEnergyTypes.electric)
+                    {
+                        collectElectricData();
+                    }
                 }
+                
                 Enums.e_VehicleDataKeys[] PropertyDataArr = m_Garage.GetPropertiesInfo();
                 foreach (Enums.e_VehicleDataKeys PropertyData in PropertyDataArr)
                 {
@@ -153,23 +162,27 @@ namespace UI
            
             int wheelInputOption;
             
-            //getDataFromUserDirectly("Enter energy percentage:", Enums.e_VehicleDataKeys.EnergyPercentage);
+            
 
             wheelInputOption= getIndexFromOptions(m_WheelInputOptionsToEnter, "enter wheel input method");
-            
-                if (wheelInputOption == 1)
-                {
-                    for (int i = 0; i < m_Garage.GetAmountOfWheelsInVehicleBeingCreated(); i++)
-                    {
-                        getDataFromUserDirectly("Enter wheel manufacturer name and air pressure in format- |name,pressure|:", e_VehicleDataKeys.WheelData);
 
-                    }
+            if (wheelInputOption == 1)
+            {
+                for (int i = 0; i < m_Garage.GetAmountOfWheelsInVehicleBeingCreated(); i++)
+                {
+                    getDataFromUserDirectly("Enter wheel manufacturer name and air pressure in format- |name,pressure|:", e_VehicleDataKeys.WheelData);
 
                 }
-                else
+
+            }
+            else
+            {
+                if (wheelInputOption == 0)
                 {
                     getDataFromUserDirectly("Enter wheel manufacturer name and air pressure in format- |name,pressure|:", e_VehicleDataKeys.MultipleWheelData);
                 }
+            }
+                
         }
 
        

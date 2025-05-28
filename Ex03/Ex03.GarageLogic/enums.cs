@@ -42,6 +42,7 @@ namespace Enums ///add enums to specific classes as public instead
         IsCarryingDangerousMaterials,
         CargoVolume,
         EnergyPercentage
+           
     }
 
 }

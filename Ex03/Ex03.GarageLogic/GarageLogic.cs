@@ -8,12 +8,20 @@ using BaseVehicle;
 using System.Runtime.CompilerServices;
 using System.Reflection.Emit;
 using Ex03.GarageLogic.Combustive;
+using Ex03.GarageLogic.Electric;
+using Ex03.GarageLogic.IO;
 namespace Ex03.GarageLogic
 {
     public class GarageLogic
     {
+       public enum AvailableEnergyTypes
+        {
+            fuel,
+            electric
+        }
         Dictionary<string,GarageEntry> m_vehicleDataBase =new Dictionary<string,GarageEntry>();
         Vehicle? m_VehicleBeingCreated;
+        readonly string m_VehicleDataFilePath= "Vehicles.db";
         public void SetCreatedVehicleAttribute(e_VehicleDataKeys key, string value)
         {
             if (key == e_VehicleDataKeys.WheelData || key == e_VehicleDataKeys.MultipleWheelData)
@@ -26,63 +34,27 @@ namespace Ex03.GarageLogic
                 {
 
 
-                    case e_VehicleDataKeys.Color:
-
-                        // vehicle.Color = color;
-                        break;
-
-                    case e_VehicleDataKeys.NumberOfDoors:
-                        if (!int.TryParse(value, out int numberOfDoors))
-                            throw new FormatException("Invalid format for NumberOfDoors.");
-                        // vehicle.NumberOfDoors = numberOfDoors;
-                        break;
-
-                    case e_VehicleDataKeys.LicenseType:
-
-                        // vehicle.LicenseType = licenseType;
-                        break;
-
-                    case e_VehicleDataKeys.EngineCapacity:
-                        if (!int.TryParse(value, out int engineCapacity))
-                            throw new FormatException("Invalid format for EngineCapacity.");
-                        // vehicle.EngineCapacity = engineCapacity;
-                        break;
-
-
 
 
                     case e_VehicleDataKeys.CurrentFuelAmount:
                         if (!float.TryParse(value, out float fuelAmount))
                             throw new FormatException("Invalid format for CurrentFuelAmount.");
-                        if (m_VehicleBeingCreated is ICombustive vehicleCar)
+                        if (m_VehicleBeingCreated is ICombustive fuelVehicle)
                         {
-                            vehicleCar.Fuel(vehicleCar.GetFuelType(),fuelAmount); 
+                            fuelVehicle.Fuel(fuelVehicle.GetFuelType(),fuelAmount); 
                         }
                         break;
 
                     case e_VehicleDataKeys.CurrentBatteryTime:
                         if (!float.TryParse(value, out float batteryTime))
                             throw new FormatException("Invalid format for CurrentBatteryTime.");
-                        // vehicle.CurrentBatteryTime = batteryTime;
+                        if (m_VehicleBeingCreated is IElectric electricVehicle)
+                        {
+                            electricVehicle.Charge( batteryTime);
+                        }
                         break;
 
-                    case e_VehicleDataKeys.IsCarryingDangerousMaterials:
-                        if (!bool.TryParse(value, out bool isCarrying))
-                            throw new FormatException("Invalid format for IsCarryingDangerousMaterials.");
-                        // vehicle.IsCarryingDangerousMaterials = isCarrying;
-                        break;
-
-                    case e_VehicleDataKeys.CargoVolume:
-                        if (!float.TryParse(value, out float cargoVolume))
-                            throw new FormatException("Invalid format for CargoVolume.");
-                        // vehicle.CargoVolume = cargoVolume;
-                        break;
-
-                    case e_VehicleDataKeys.EnergyPercentage://delete maybe
-                        if (!float.TryParse(value, out float energyPercentage))
-                            throw new FormatException("Invalid format for EnergyPercentage.");
-                          
-                        break;
+                    
                     
 
                     default:
@@ -96,7 +68,7 @@ namespace Ex03.GarageLogic
             int numOfWheels;
             if(m_VehicleBeingCreated == null)
             {
-                throw new NullReferenceException("vehicle not created yet");
+                throw new ArgumentException("not able to get amount of wheels");
             }
             else
             {
@@ -124,7 +96,7 @@ namespace Ex03.GarageLogic
             o_Entry= new GarageEntry(m_VehicleBeingCreated,i_OwnerName, i_PhoneNumber);
             if(o_Entry==null)
             {
-                //errrorrrrrr
+                throw new NullReferenceException("failed to create entry");
             }
             else
             {
@@ -134,9 +106,28 @@ namespace Ex03.GarageLogic
             return o_Entry;
             
         }
-        public string getCarEnergyType()
+        public AvailableEnergyTypes getCarEnergyType()
         {
-            return "Fuel";
+            AvailableEnergyTypes energyType;
+            if (m_VehicleBeingCreated is ICombustive fuelVehicle)
+            {
+                energyType = AvailableEnergyTypes.fuel;
+            }
+            else
+            {
+                if (m_VehicleBeingCreated is IElectric electricVehicle)
+                {
+                    energyType = AvailableEnergyTypes.electric;
+                }
+                else
+                {
+                    throw new ArgumentException("fuel type not found");
+                }
+
+            }
+
+            
+            return energyType;
         }
         public e_VehicleDataKeys[] GetPropertiesInfo()
         {
@@ -144,11 +135,18 @@ namespace Ex03.GarageLogic
         }
         public void ReadVehicleDataFromFile()
         {
-
+            IReadOnlyList<GarageEntry> garageEntries;
+            
+              garageEntries=  VehicleFileImporter.Import(m_VehicleDataFilePath);
+            foreach(GarageEntry Entry in garageEntries)
+            {
+                AddEntryToDataBase(Entry);
+            }
+            
         }
         public void GetLicensePlateList()
         {
-
+          List<string>   keys=  m_vehicleDataBase.Keys.ToList();
         }
         public void ChangeVehicleState(string i_State,string i_PlateNumber)
         {
