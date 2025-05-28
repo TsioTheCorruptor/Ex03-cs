@@ -19,17 +19,17 @@ namespace Ex03.GarageLogic.Vehicles
 
         public float GetMaxCharge()
         {
-            return ((IElectric)this.m_powerTrain).GetMaxCharge();
+            return ((IElectric)this.r_PowerTrain).GetMaxCharge();
         }
 
         public float GetRemaningCharge()
         {
-            return ((IElectric)this.m_powerTrain).GetRemaningCharge();
+            return ((IElectric)this.r_PowerTrain).GetRemaningCharge();
         }
 
         public void Charge(float i_time)
         {
-            ((IElectric)this.m_powerTrain).Charge(i_time);
+            ((IElectric)this.r_PowerTrain).Charge(i_time);
         }
     }
 }

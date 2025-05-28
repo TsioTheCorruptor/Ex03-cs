@@ -23,19 +23,19 @@ namespace Ex03.GarageLogic
 
         public float GetMaxFuelAmount()
         {
-            return ((ICombustive)this.m_powerTrain).GetMaxFuelAmount();
+            return ((ICombustive)this.r_PowerTrain).GetMaxFuelAmount();
         }
         public float GetFuelRemainingAmount()
         {
-            return ((ICombustive)this.m_powerTrain).GetFuelRemainingAmount();
+            return ((ICombustive)this.r_PowerTrain).GetFuelRemainingAmount();
         }
         public FuelType GetFuelType()
         {
-            return ((ICombustive)this.m_powerTrain).GetFuelType();
+            return ((ICombustive)this.r_PowerTrain).GetFuelType();
         }
         public void Fuel(FuelType i_fuelType, float i_literFuelAmount)
         {
-            ((ICombustive)this.m_powerTrain).Fuel(i_fuelType, i_literFuelAmount);
+            ((ICombustive)this.r_PowerTrain).Fuel(i_fuelType, i_literFuelAmount);
         }
     }
 }

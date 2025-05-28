@@ -72,7 +72,7 @@ namespace Ex03.GarageLogic
             }
             else
             {
-                numOfWheels = m_VehicleBeingCreated.m_maxNumOfWheels;
+                numOfWheels = m_VehicleBeingCreated.r_MaxNumOfWheels;
                 return numOfWheels;
 
             }
@@ -86,7 +86,7 @@ namespace Ex03.GarageLogic
         }
         private void AddEntryToDataBase(GarageEntry i_Entry)
         {
-            string licensePlate = i_Entry.m_vehicle.m_licansePlate;
+            string licensePlate = i_Entry.m_vehicle.r_LicansePlate;
             m_vehicleDataBase.Add(licensePlate, i_Entry);
         }
         public GarageEntry CreateEntryFromTempVehicle(string i_PhoneNumber,string i_OwnerName)
