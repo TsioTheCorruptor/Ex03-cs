@@ -12,7 +12,7 @@ namespace UserInterface
                                      FillAirInTires,ChargeFuelVehicle,ChargeElectricVehicle,ShowFullVehicleData,Quit }
         GarageLogic m_Garage=new GarageLogic();
 
-        // Keeps the same name, but now it's dynamically generated from the enum
+        
          private readonly string[] r_EntriesForFuel = { "enter plate number:", "enter fuel amount:" };
         private readonly string[] r_EntriesForOwner = { "owner name:", "phone number:" };
         private readonly string[] r_EntriesForElectric = { "enter plate number:", "enter charge amount in minutes:" };
@@ -156,7 +156,7 @@ namespace UserInterface
             
            
             entryExists=m_Garage.DoesEntryAlreadyExist(plateNumber);
-            if (entryExists) // TODO: check if already exists
+            if (entryExists)
             {
                 Console.WriteLine("Entry already exists , Changing state to |Repair in Progress|");
                 m_Garage.ChangeVehicleState(eGarageEntryStatus.RepairInProgress, plateNumber);
@@ -179,7 +179,7 @@ namespace UserInterface
                 eVehicleTypes selectedType = (eVehicleTypes)vehicleNameIndex;
                 m_Garage.CreateTempVehicle(plateNumber, r_VehicleTypesToEnter[vehicleNameIndex], modelName);
                 collectCommonData();
-                if (m_Garage.getCarEnergyType() == GarageLogic.eAvailableEnergyTypes.Fuel) //make it enum
+                if (m_Garage.getCarEnergyType() == GarageLogic.eAvailableEnergyTypes.Fuel) 
                 {
                     collectFuelData();
                 }
@@ -192,7 +192,7 @@ namespace UserInterface
                 }
                 setVehiclePropertiesAndAddEntry();
 
-                // TODO: send to engine to create vehicle with data
+                
 
             }
         }
