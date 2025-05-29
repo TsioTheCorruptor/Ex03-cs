@@ -17,7 +17,7 @@ namespace Ex03.GarageLogic.BaseVehicleTypes
         private const int k_NumberOfProperties = 2;
         //part of *
         private static readonly IReadOnlyList<string> sr_PropertyNames = new List<string>(k_NumberOfProperties)
-        { "LicenceType", "EngineVolume" }.AsReadOnly();
+        { "LicenseType", "EngineVolume" }.AsReadOnly();
         //part of *
         private readonly IReadOnlyList<string> sr_PropertyTypes = new List<string>(k_NumberOfProperties)
         { "name", "int" }.AsReadOnly();

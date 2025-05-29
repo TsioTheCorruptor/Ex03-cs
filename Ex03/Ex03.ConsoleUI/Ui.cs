@@ -4,7 +4,7 @@ using Ex03.GarageLogic;
 using Enums;
 using CostumExceptions;
 using Ex03.GarageLogic.IO;
-namespace UI
+namespace UserInterface
 {
     internal class Ui
     {
@@ -191,7 +191,7 @@ namespace UI
                     }
                 }
                 setVehiclePropertiesAndAddEntry();
-                
+
                 // TODO: send to engine to create vehicle with data
 
             }

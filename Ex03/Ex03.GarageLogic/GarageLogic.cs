@@ -88,7 +88,7 @@ namespace Ex03.GarageLogic
         }
         public void CreateTempVehicle(string i_licenseNumber,string i_VehicleType,string i_ModelName)
         {
-            m_VehicleBeingCreated=VehicleCreator.CreateVehicle(i_VehicleType, i_ModelName,i_ModelName);
+            m_VehicleBeingCreated=VehicleCreator.CreateVehicle(i_VehicleType, i_licenseNumber,i_ModelName);
         }
         private void AddEntryToDataBase(GarageEntry i_Entry)
         {
@@ -97,6 +97,10 @@ namespace Ex03.GarageLogic
         }
         public void CreateEntryFromTempVehicle(string i_PhoneNumber,string i_OwnerName)
         {
+            if (m_VehicleBeingCreated == null)
+            {
+                throw new ArgumentException("cennot modify vehicle");
+            }
             //check if vehicle valid
             GarageEntry? o_Entry=null;
             o_Entry= new GarageEntry(m_VehicleBeingCreated,i_OwnerName, i_PhoneNumber);
@@ -133,9 +137,12 @@ namespace Ex03.GarageLogic
         }
         public List<string> GetPropertiesInfo()
         {
-            
-            
-           IReadOnlyList<string> o_stringListTypes= m_VehicleBeingCreated.GetPropertyTypesList();
+            if (m_VehicleBeingCreated == null)
+            {
+                throw new ArgumentException("cennot modify vehicle");
+            }
+
+            IReadOnlyList<string> o_stringListTypes= m_VehicleBeingCreated.GetPropertyTypesList();
             IReadOnlyList<string> o_stringListNames = m_VehicleBeingCreated.GetPropertyNamesList();
             List<string> o_listToReturn = new List<string>(o_stringListNames.Count);
             if(o_stringListNames.Count!=o_stringListTypes.Count)
@@ -150,6 +157,10 @@ namespace Ex03.GarageLogic
         }
         public void SetPropertiesInfo(List<string> i_PropertyString)
         {
+            if (m_VehicleBeingCreated == null)
+            {
+                throw new ArgumentException("cennot modify vehicle");
+            }
             m_VehicleBeingCreated.SetAllPropertiesFromOrderdListOfStrings(i_PropertyString);
         }
         public void ReadVehicleDataFromFile()
@@ -161,7 +172,7 @@ namespace Ex03.GarageLogic
             {
                 AddEntryToDataBase(Entry);
             }
-            int i = 7;
+            
         }
 
         public string[] GetLicensePlateList(eGarageEntryStatus i_SortType,eSortOptions i_SortChoice)
@@ -232,6 +243,7 @@ namespace Ex03.GarageLogic
             {
                 throw new FormatException("cannot fuel non fuel powered car");
             }
+            int i = 9;
         }
         public void ChargeElectricVehicle(string i_PlateNumber, string i_MinutesToCharge)
         {
@@ -270,7 +282,7 @@ namespace Ex03.GarageLogic
             }
             energyType =string.Format("{0}|{1}",energyType,entry.r_Vehicle.EnergyPrecentage)  ;
 
-            Console.WriteLine("License type:{0}, Model name:{1}, Owner name{2}, Status{3},Wheel data:{4},Energy type:{5}, Properties{6}",
+            Console.WriteLine("License type:{0}, Model name:{1}, Owner name:{2}, Status:{3},Wheel data:{4},Energy type:{5}, Properties:{6}",
                      entry.r_Vehicle.GetLicansePlate(),
                      entry.r_Vehicle.GetModelName(),
                      entry.r_OwnerName,
@@ -310,7 +322,12 @@ namespace Ex03.GarageLogic
         }
         public void SetCreatedWheelAttributes(eVehicleDataKeys i_DataKey,string i_WheelData)
         {
-string[] splitString = splitWheelDataSeparatedByComma(i_WheelData);
+            if (m_VehicleBeingCreated == null)
+            {
+                throw new ArgumentException("cennot modify vehicle");
+            }
+
+            string[] splitString = splitWheelDataSeparatedByComma(i_WheelData);
             if(i_DataKey==eVehicleDataKeys.WheelData)
             {
                 m_VehicleBeingCreated.AddWheel(splitString[0], float.Parse(splitString[1]));
@@ -320,6 +337,7 @@ string[] splitString = splitWheelDataSeparatedByComma(i_WheelData);
                 m_VehicleBeingCreated.InitAllWheels(splitString[0], float.Parse(splitString[1]));
             }
         }
+        
         public void FillAirInEntry(string i_PlateNumber)
         {
             m_VehicleDataBase[i_PlateNumber].r_Vehicle.InflateAllTiresToMax();

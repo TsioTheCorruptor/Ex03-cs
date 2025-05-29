@@ -11,7 +11,7 @@ namespace Ex03.GarageLogic
         private const float k_InitialFuelAmount = 0;
         private const eFuelType k_DefaultFuelType = eFuelType.Octan95;
         public FuelCar(string i_modelName, string i_licansePlate)
-            : base( i_licansePlate,i_modelName, new CombustivePowertrain(k_MinimumFuelAmount, k_FuelTankVolume, k_InitialFuelAmount, k_DefaultFuelType))
+            : base(i_licansePlate,i_modelName , new CombustivePowertrain(k_MinimumFuelAmount, k_FuelTankVolume, k_InitialFuelAmount, k_DefaultFuelType))
         {
 
         }

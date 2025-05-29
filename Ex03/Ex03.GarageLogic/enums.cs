@@ -27,22 +27,13 @@ namespace Enums ///add enums to specific classes as public instead
     }
     public enum eVehicleDataKeys
     {
-        LicensePlate,
-        VehicleType,
-        ModelName,
+
         WheelData,
         MultipleWheelData,
-        Color,
-        NumberOfDoors,
-        LicenseType,
-        EngineCapacity,
         FuelType,
-        CurrentFuelAmount,
         CurrentBatteryTime,
-        IsCarryingDangerousMaterials,
-        CargoVolume,
-        EnergyPercentage
-           
+        CurrentFuelAmount
+
     }
 
 }
